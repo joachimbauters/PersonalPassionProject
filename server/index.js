@@ -16,11 +16,15 @@ mongoose
     process.exit();
   });
 
-// const resolvers = require("./app/resolvers.js");
+const resolvers = require("./app/resolvers.js");
 
-// const server = new GraphQLServer({
-//   typeDefs: `${__dirname}/app/schema.graphql`,
-//   resolvers
-// });
+const server = new GraphQLServer({
+  typeDefs: `${__dirname}/app/schema.graphql`,
+  resolvers
+});
 
 // server.start(() => console.log("Server is running on localhost:4000"));
+
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
