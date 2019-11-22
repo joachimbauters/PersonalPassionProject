@@ -1,0 +1,14 @@
+{
+  "name": "personalpassionproject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:joachimbauters/PersonalPassionProject.git",
+  "author": "Joachim Bauters <joachim.bauters@student.howest.be>",
+  "license": "MIT",
+  "scripts": {
+    "build": "cd client/ && yarn && yarn build"
+  },
+  "cacheDirectories": [
+    "client/node_modules"
+  ]
+}
