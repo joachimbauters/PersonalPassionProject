@@ -6,7 +6,7 @@
   "author": "Joachim Bauters <joachim.bauters@student.howest.be>",
   "license": "MIT",
   "scripts": {
-    "build": "cd client/ && yarn && yarn build"
+    "start": "cd client/ && yarn && yarn build"
   },
   "cacheDirectories": [
     "client/node_modules"
