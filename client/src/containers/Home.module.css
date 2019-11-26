@@ -39,6 +39,8 @@
   width: 25rem;
   padding: 2rem;
   border-radius: 2rem;
+  overflow-y: scroll;
+  height: 35rem;
   
 }
 

@@ -1,21 +1,48 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./Home.module.css";
+import Asteroides from "../components/asteroides/Asteroides.jsx";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 class ThreeContainer extends Component {
-  componentDidMount() {
-    let camera, renderer, scene, controls, meshes, particles;
+  constructor(props) {
+    super(props);
+  }
+
+  async componentDidMount() {
+    let camera,
+      renderer,
+      scene,
+      controls,
+      meshes,
+      particles,
+      astroids,
+      INTERSECTED,
+      sputnik,
+      sputnik2;
+
+    const { astroidesArray } = this.props;
+
+    const astroidesArray2 = [];
+    for (let [key, value] of Object.entries(astroidesArray)) {
+      value.forEach(astroid => {
+        astroidesArray2.push(astroid);
+      });
+    }
+
+    const normalize = (val, minVal, maxVal, newMin, newMax) => {
+      return newMin + ((val - minVal) * (newMax - newMin)) / (maxVal - minVal);
+    };
 
     const createCamera = () => {
       // Create a Camera
-      const fov = 35;
+      const fov = 30;
       const aspect = window.innerWidth / window.innerHeight;
       const near = 0.1;
-      const far = 1000;
+      const far = 7000;
 
       camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.set(10, 30, 10);
+      camera.position.set(10, 70, 10);
       camera.up.set(0, 0, 1);
       camera.lookAt(0, 0, 0);
     };
@@ -28,13 +55,13 @@ class ThreeContainer extends Component {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setClearColor(0x000000, 0);
-      // renderer.gammaFactor = 2.2;
-      // renderer.gammaOutput = true;
-      // renderer.physicallyCorrectLights = true;
       this.mount.appendChild(renderer.domElement);
     };
 
     const createLights = () => {
+      const sunLight = new THREE.PointLight(0xffcc00, 0.5);
+      sunLight.position.set(-20, -20, -10);
+      sunLight.color.convertSRGBToLinear();
       const mainLight = new THREE.PointLight(0x004d6d, 1);
       const ambientLight = new THREE.AmbientLight(0xe5d5d5);
       ambientLight.intensity = 0.5;
@@ -59,6 +86,7 @@ class ThreeContainer extends Component {
       shadowLight.shadow.mapSize.height = 20.48;
 
       scene.add(
+        sunLight,
         mainLight,
         ambientLight,
         hemisphereLight,
@@ -69,10 +97,10 @@ class ThreeContainer extends Component {
 
     const stars = () => {
       particles = new THREE.CircleGeometry(0.5, 50);
-      for (let p = 0; p < 10000; p++) {
+      for (let p = 0; p < 100000; p++) {
         const particle = new THREE.Vector3(
-          Math.random() * 500 - 250,
-          Math.random() * 500 - 450,
+          Math.random() * 1000 - 250,
+          Math.random() * 5000 - 450,
           Math.random() * 3000 - 500
         );
         particles.vertices.push(particle);
@@ -83,7 +111,7 @@ class ThreeContainer extends Component {
         size: 1
       });
       const particleSystem = new THREE.Points(particles, particleMaterial);
-      particleSystem.position.y = 150;
+      particleSystem.position.y = -200;
       scene.add(particleSystem);
     };
 
@@ -243,16 +271,20 @@ class ThreeContainer extends Component {
       }
     }
 
+    let mouse = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+
     class Astroid {
-      constructor() {
+      constructor(size) {
         this.mesh = new THREE.Object3D();
-        let size = Math.random() / 2;
         const geometry = new THREE.DodecahedronGeometry(size, 1);
         geometry.vertices.forEach(function(v) {
           v.x += 0 - Math.random() * (size / 4);
           v.y += 0 - Math.random() * (size / 4);
           v.z += 0 - Math.random() * (size / 4);
         });
+        geometry.computeFaceNormals();
+        geometry.center();
         geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI));
         let color = "#111111";
         color = ColorLuminance(color, 2 + Math.random() * 10);
@@ -266,11 +298,6 @@ class ThreeContainer extends Component {
         const cube = new THREE.Mesh(geometry, texture);
         cube.castShadow = true;
         cube.receiveShadow = true;
-        cube.scale.set(
-          1 + Math.random() * 0.4,
-          1 + Math.random() * 0.8,
-          1 + Math.random() * 0.4
-        );
         this.mesh.add(cube);
       }
     }
@@ -299,50 +326,207 @@ class ThreeContainer extends Component {
     class AstroidField {
       constructor() {
         this.mesh = new THREE.Object3D();
-        this.nAstroids = 100;
-        let stepAngle = (Math.PI * 2) / this.nAstroids;
-        for (let i = 0; i < this.nAstroids; i++) {
-          const c = new Astroid();
-          const a = stepAngle * i;
-          const h = 15 + Math.random() * 2;
+        this.count = 1;
+        this.distance = 0;
+        this.size = 0;
+        let stepAngle = (Math.PI * 2) / astroidesArray2.length;
+        astroidesArray2.forEach(asteroid => {
+          this.count++;
+          const average =
+            (asteroid.estimated_diameter.kilometers.estimated_diameter_max +
+              asteroid.estimated_diameter.kilometers.estimated_diameter_min) /
+            2;
+
+          this.size = average;
+
+          const c = new Astroid(this.size);
+          const a = stepAngle + this.count;
+          asteroid.close_approach_data.forEach(asteroid => {
+            this.distance = normalize(
+              asteroid.miss_distance.lunar,
+              0,
+              200,
+              10,
+              30
+            );
+          });
+          const h = this.distance + this.size;
           c.mesh.position.y = Math.sin(a) * h;
           c.mesh.position.x = Math.cos(a) * h;
           c.mesh.rotation.z = a + Math.PI / 2;
-          c.mesh.position.z = -4 - Math.random() * 4;
-          const s = 1 + Math.random() * 2;
+          c.mesh.position.z = -40 - this.distance * 5;
+          const s = 1 + this.size;
           c.mesh.scale.set(s, s, s);
           this.mesh.add(c.mesh);
-        }
+        });
       }
     }
 
-    const createMeshes = () => {
+    class Sputnik {
+      constructor() {
+        this.mesh = new THREE.Object3D();
+        this.pivot = new THREE.Object3D();
+
+        const mainModuleGeom = new THREE.CylinderGeometry(17, 13, 50, 7, 1);
+        const mainModuleMat = new THREE.MeshPhongMaterial({
+          shininess: 100,
+          color: 0xb2b8af,
+          shading: THREE.FlatShading
+        });
+
+        const mainModule = new THREE.Mesh(mainModuleGeom, mainModuleMat);
+
+        const wingsGeom = new THREE.BoxGeometry(300, 20, 1, 11, 1, 1);
+
+        for (let i = 0; i < wingsGeom.vertices.length; i++) {
+          if (i % 2 === 0) {
+            wingsGeom.vertices[i].z += 5;
+          } else {
+            wingsGeom.vertices[i].z -= 5;
+          }
+        }
+
+        const wingsMat = new THREE.MeshPhongMaterial({
+          shininess: 100,
+          color: 0xd3c545,
+          shading: THREE.FlatShading
+        });
+
+        const wings = new THREE.Mesh(wingsGeom, wingsMat);
+        wings.position.set(0, 0, 0);
+
+        const antenaGeom = new THREE.CylinderGeometry(40, 10, 20, 10);
+
+        const antenaMat = new THREE.MeshPhongMaterial({
+          shininess: 100,
+          color: 0xaed3be,
+          shading: THREE.FlatShading
+        });
+
+        const antena = new THREE.Mesh(antenaGeom, antenaMat);
+        antena.position.y = 35;
+
+        this.mesh.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 3));
+        this.mesh.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI / 3));
+
+        this.mesh.scale.set(0.1, 0.1, 0.1);
+        this.mesh.add(mainModule, wings, antena);
+
+        this.pivot.add(this.mesh);
+      }
+    }
+
+    class Moon {
+      constructor() {
+        this.mesh = new THREE.Object3D();
+        const geom = new THREE.OctahedronGeometry(55, 2);
+        const mat = new THREE.MeshStandardMaterial({
+          color: 0x676767,
+          flatShading: true,
+          roughness: 0.8,
+          metalness: 0.2
+        });
+        const moonSphere = new THREE.Mesh(geom, mat);
+
+        moonSphere.receiveShadow = true;
+        moonSphere.castShadow = true;
+
+        this.mesh.add(moonSphere);
+      }
+    }
+
+    class Sun {
+      constructor() {
+        this.mesh = new THREE.Object3D();
+        const geom = new THREE.OctahedronGeometry(55, 2);
+        const mat = new THREE.MeshPhongMaterial({
+          color: "yellow",
+          emissive: "#F8CE3B"
+        });
+        const sunSphere = new THREE.Mesh(geom, mat);
+
+        sunSphere.receiveShadow = true;
+        sunSphere.castShadow = true;
+
+        this.mesh.add(sunSphere);
+      }
+    }
+
+    const createSolarSystem = () => {
       const solarSystem = new THREE.Object3D();
       const earth = new Earth();
-      earth.mesh.scale.set(0.1, 0.1, 0.1);
+      earth.mesh.scale.set(0.15, 0.15, 0.15);
 
-      const astroids = new AstroidField();
-      astroids.mesh.position.z = 7;
+      sputnik = new Sputnik();
+      sputnik.mesh.position.set(-10, 0, 5);
+      sputnik.mesh.scale.set(0.01, 0.01, 0.01);
 
+      sputnik2 = new Sputnik();
+      sputnik2.mesh.position.set(10, 0, -5);
+      sputnik2.mesh.scale.set(0.01, 0.01, 0.01);
+
+      astroids = new AstroidField();
+      astroids.mesh.position.z = 160;
+
+      const moon = new Moon();
+      const moonOrbit = new THREE.Object3D();
+      moon.mesh.scale.set(0.04, 0.04, 0.04);
+      moonOrbit.position.y = -40;
+      moonOrbit.position.x = 20;
+      moonOrbit.add(moon.mesh);
+
+      const sun = new Sun();
+      sun.mesh.scale.set(1, 1, 1);
+      sun.mesh.position.set(-800, -5000, -200);
+
+      solarSystem.add(sputnik.pivot);
+      solarSystem.add(sputnik2.pivot);
       solarSystem.add(astroids.mesh);
       solarSystem.add(earth.mesh);
+      solarSystem.add(moonOrbit);
 
       const group = new THREE.Group();
       group.add(solarSystem);
 
+      scene.add(sun.mesh);
+
       scene.add(group);
 
       return {
+        moonOrbit: moonOrbit,
         solarSystem: solarSystem
       };
     };
 
     const update = () => {
-      meshes.solarSystem.rotation.z += 0.0005;
+      meshes.solarSystem.rotation.z += 0.0002;
+      meshes.moonOrbit.rotation.z += 0.002;
+
+      sputnik.pivot.rotation.y -= 0.001;
+      sputnik.pivot.rotation.x -= 0.0001;
+      sputnik2.pivot.rotation.y -= 0.002;
+      sputnik2.pivot.rotation.x -= 0.0002;
     };
 
     const render = () => {
-      onWindowResize();
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(
+        astroids.mesh.children,
+        true
+      );
+
+      if (intersects.length > 0) {
+        //controls.enabled = false;
+        if (INTERSECTED !== intersects[0].object) {
+          if (INTERSECTED)
+            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+          INTERSECTED = intersects[0].object;
+          INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+          INTERSECTED.material.emissive.setHex(0xff0000);
+        }
+      }
+
       renderer.render(scene, camera);
     };
 
@@ -352,15 +536,24 @@ class ThreeContainer extends Component {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
+    const onMouseMove = e => {
+      e.preventDefault();
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+
     const init = () => {
       scene = new THREE.Scene();
-      scene.position.x = 7;
+      scene.updateMatrixWorld(true);
+      scene.position.x = 10;
 
       stars();
       createCamera();
       createLights();
-      meshes = createMeshes();
+      meshes = createSolarSystem();
       createRenderer();
+
+      onWindowResize();
 
       const animate = () => {
         requestAnimationFrame(animate);
@@ -373,6 +566,8 @@ class ThreeContainer extends Component {
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
       controls.rotateSpeed = 0.1;
+
+      document.addEventListener("click", onMouseMove, false);
     };
     init();
   }
@@ -380,6 +575,7 @@ class ThreeContainer extends Component {
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
+    const { astroidesArray } = this.props;
     return (
       <>
         <section className={styles.homeGrid}>
@@ -394,10 +590,7 @@ class ThreeContainer extends Component {
             <h1 className={styles.logo}>Immo Astroid</h1>
             <div className={styles.card}>
               <h2>Astroïdes</h2>
-              <li>
-                <ul>Astroide1</ul>
-              </li>
-              <button>hey</button>
+              <Asteroides astroidesArray={astroidesArray} />
             </div>
           </div>
         </section>
