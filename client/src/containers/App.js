@@ -3,9 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { ROUTES } from "../constants";
 
 import Home from "./Home.jsx";
-import asteroid_img from "../assets/asteroid.svg";
-import asteroid_loader from "../assets/preload.svg";
-import styles from "./App.module.css";
+import PreLoader from "./Preloader";
 
 class App extends Component {
   constructor(props) {
@@ -44,21 +42,12 @@ class App extends Component {
       <>
         <Switch>
           {loading ? (
-            <div className={styles.loader}>
-              <div className={styles.loader_flex}>
-                <img
-                  className={styles.asteroid}
-                  src={asteroid_img}
-                  alt="asteroid"
-                ></img>
-                <img
-                  className={styles.loadergif}
-                  src={asteroid_loader}
-                  alt="loader"
-                ></img>
-              </div>
-              <p className={styles.loadingtext}>loading...</p>
-            </div>
+            <Route
+              path={ROUTES.landing}
+              exact
+              strict
+              render={() => <PreLoader />}
+            />
           ) : (
             <Route
               path={ROUTES.landing}
