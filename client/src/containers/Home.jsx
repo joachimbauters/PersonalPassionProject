@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./Home.module.css";
+import Preloader from "./Preloader.jsx";
 import Asteroides from "../components/asteroides/Asteroides.jsx";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
