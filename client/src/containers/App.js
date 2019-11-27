@@ -4,6 +4,8 @@ import { ROUTES } from "../constants";
 
 import Home from "./Home.jsx";
 import PreLoader from "./Preloader";
+import Login from "./Login";
+import Registreer from "./Registreer";
 
 class App extends Component {
   constructor(props) {
@@ -56,6 +58,13 @@ class App extends Component {
               render={() => <Home astroidesArray={astroidesArray} />}
             />
           )}
+          <Route path={ROUTES.login} exact strict render={() => <Login />} />
+          <Route
+            path={ROUTES.registreer}
+            exact
+            strict
+            render={() => <Registreer />}
+          />
         </Switch>
       </>
     );

@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./Home.module.css";
-import Preloader from "./Preloader.jsx";
 import Asteroides from "../components/asteroides/Asteroides.jsx";
+import TabBar from "../components/TabBar";
+import Huren from "../components/Huren";
+import Kopen from "../components/Kopen";
+import Account from "../components/Account";
+import Notifications from "../components/Notifications";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 class ThreeContainer extends Component {
@@ -25,7 +29,7 @@ class ThreeContainer extends Component {
     const { astroidesArray } = this.props;
 
     const astroidesArray2 = [];
-    for (let [key, value] of Object.entries(astroidesArray)) {
+    for (let [, value] of Object.entries(astroidesArray)) {
       value.forEach(astroid => {
         astroidesArray2.push(astroid);
       });
@@ -510,23 +514,23 @@ class ThreeContainer extends Component {
     };
 
     const render = () => {
-      raycaster.setFromCamera(mouse, camera);
+      // raycaster.setFromCamera(mouse, camera);
 
-      const intersects = raycaster.intersectObjects(
-        astroids.mesh.children,
-        true
-      );
+      // const intersects = raycaster.intersectObjects(
+      //   astroids.mesh.children,
+      //   true
+      // );
 
-      if (intersects.length > 0) {
-        //controls.enabled = false;
-        if (INTERSECTED !== intersects[0].object) {
-          if (INTERSECTED)
-            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
-          INTERSECTED = intersects[0].object;
-          INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-          INTERSECTED.material.emissive.setHex(0xff0000);
-        }
-      }
+      // if (intersects.length > 0) {
+      //   //controls.enabled = false;
+      //   if (INTERSECTED !== intersects[0].object) {
+      //     if (INTERSECTED)
+      //       INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex);
+      //     INTERSECTED = intersects[0].object;
+      //     INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+      //     INTERSECTED.material.emissive.setHex(0xff0000);
+      //   }
+      // }
 
       renderer.render(scene, camera);
     };
@@ -588,10 +592,20 @@ class ThreeContainer extends Component {
             }}
           />
           <div className={styles.homeinfogrid}>
-            <h1 className={styles.logo}>Immo Astroid</h1>
+            <h1 className={styles.logo}>Immo Asteroïd</h1>
+            <div className={styles.topbar}>
+              <Account />
+              <Notifications />
+            </div>
             <div className={styles.card}>
-              <h2>Astroïdes</h2>
-              <Asteroides astroidesArray={astroidesArray} />
+              <TabBar>
+                <div label="Kopen">
+                  <Kopen astroidesArray={astroidesArray} />
+                </div>
+                <div label="Huren">
+                  <Huren />
+                </div>
+              </TabBar>
             </div>
           </div>
         </section>

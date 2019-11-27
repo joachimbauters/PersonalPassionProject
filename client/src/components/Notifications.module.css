@@ -1,0 +1,80 @@
+.notifications {
+  pointer-events: all;
+  align-self: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  text-align: start;
+}
+
+.icon {
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.icon::before {
+  content: "";
+  display: block;
+  background-image: url("../assets/notificationicon.svg");
+  background-repeat: no-repeat;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.meldingencard {
+  position: absolute;
+  z-index: 999;
+  background: white;
+  padding: 2rem;
+  margin-top: 4rem;
+  border-radius: 1.5rem;
+}
+
+.titel {
+  color: black;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.melding {
+  width: 40rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.29);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.melding p {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: black;
+}
+
+.melding p span {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffb101;
+}
+
+.melding button {
+  width: 8rem;
+  height: 3rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: black;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  outline: none;
+}

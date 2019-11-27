@@ -9,12 +9,8 @@ import { BrowserRouter } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
-// const client = new ApolloClient({
-//   uri: "http://localhost:4000/"
-// });
-
 const client = new ApolloClient({
-  uri: "/"
+  uri: "http://localhost:4000/"
 });
 
 ReactDOM.render(

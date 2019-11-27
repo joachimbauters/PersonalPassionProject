@@ -1,3 +1,6 @@
 export const ROUTES = {
-  landing: "/"
+  landing: "/",
+  huren: "/huren",
+  login: "/login",
+  registreer: "/registreer"
 };
