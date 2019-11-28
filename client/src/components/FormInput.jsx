@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./FormInput.module.css";
 
-const FormInput = ({ titel, type, name, id, placeholder, ref }) => {
+const FormInput = ({ titel, type, name, id, placeholder, value, ref }) => {
   return (
     <>
       <div className={styles.formFlex}>
@@ -13,6 +13,7 @@ const FormInput = ({ titel, type, name, id, placeholder, ref }) => {
           name={name}
           id={id}
           ref={ref}
+          value={value}
           placeholder={placeholder}
           className={styles.formInput}
         />

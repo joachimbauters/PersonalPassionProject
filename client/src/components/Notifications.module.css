@@ -17,6 +17,10 @@
   font-size: 1.4rem;
 }
 
+.icon:active {
+  opacity: 0.5;
+}
+
 .icon::before {
   content: "";
   display: block;

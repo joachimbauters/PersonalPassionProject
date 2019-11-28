@@ -4,8 +4,10 @@ import { ROUTES } from "../constants";
 
 import Home from "./Home.jsx";
 import PreLoader from "./Preloader";
+import PersoonlijkeGegevens from "./PersoonlijkeGegevens";
 import Login from "./Login";
 import Registreer from "./Registreer";
+import MijnAsteroiden from "./MijnAsteroiden";
 
 class App extends Component {
   constructor(props) {
@@ -58,6 +60,18 @@ class App extends Component {
               render={() => <Home astroidesArray={astroidesArray} />}
             />
           )}
+          <Route
+            path={ROUTES.gegevens}
+            exact
+            strict
+            render={() => <PersoonlijkeGegevens />}
+          />
+          <Route
+            path={ROUTES.mijnasteroiden}
+            exact
+            strict
+            render={() => <MijnAsteroiden />}
+          />
           <Route path={ROUTES.login} exact strict render={() => <Login />} />
           <Route
             path={ROUTES.registreer}

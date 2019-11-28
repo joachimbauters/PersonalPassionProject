@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./Home.module.css";
-import Asteroides from "../components/asteroides/Asteroides.jsx";
 import TabBar from "../components/TabBar";
 import Huren from "../components/Huren";
 import Kopen from "../components/Kopen";
 import Account from "../components/Account";
 import Notifications from "../components/Notifications";
+import RecentGekocht from "../components/RecentGekocht";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 class ThreeContainer extends Component {
@@ -606,6 +606,9 @@ class ThreeContainer extends Component {
                   <Huren />
                 </div>
               </TabBar>
+            </div>
+            <div className={styles.recentGekocht}>
+              <RecentGekocht />
             </div>
           </div>
         </section>

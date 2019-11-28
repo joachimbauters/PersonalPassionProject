@@ -1,0 +1,27 @@
+.item {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.item img {
+  width: 2rem;
+  height: 2rem;
+  border: 0.1rem solid white;
+  border-radius: 1rem;
+}
+
+.item p {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 300;
+  margin-left: 1rem;
+}
+
+.item p span {
+  font-size: 1.2rem;
+  color: #ffb101;
+  font-weight: 700;
+}

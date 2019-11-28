@@ -1,0 +1,49 @@
+.btn {
+  background-color: rgb(255, 177, 1, 0.23);
+  border: none;
+  color: rgb(255, 177, 1);
+  height: 4rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.titel {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+}
+
+.registreer {
+  width: 100%;
+  height: 4rem;
+  color: rgb(255, 177, 1);
+  background-color: rgb(255, 177, 1, 0.23);
+  font-weight: 500;
+  font-size: 1.4rem;
+  outline: none;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  margin-top: 7rem;
+}
+.registreer:hover {
+  background-color: rgb(255, 177, 1, 0.3);
+}
+
+.formflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 30rem;
+}

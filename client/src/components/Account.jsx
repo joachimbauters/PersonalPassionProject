@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./Account.module.css";
 import userimage from "../assets/user1.png";
+import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { ROUTES } from "../constants";
 
 const Account = () => {
   const [selected, setSelected] = React.useState(true);
@@ -26,9 +29,19 @@ const Account = () => {
           <></>
         ) : (
           <ul className={styles.nav}>
-            <li className={styles.navItem}>Persoonlijke gegevens</li>
-            <li className={styles.navItem}>Mijn asteroïden</li>
-            <li className={styles.navItem}>Uitloggen</li>
+            <li className={styles.navItem}>
+              <NavLink exact={true} to={ROUTES.gegevens}>
+                Persoonlijke gegevens
+              </NavLink>
+            </li>
+            <li className={styles.navItem}>
+              <NavLink exact={true} to={ROUTES.mijnasteroiden}>
+                Mijn Asteroïden
+              </NavLink>
+            </li>
+            <li className={styles.navItem}>
+              <button>Uitloggen</button>
+            </li>
           </ul>
         )}
       </div>
@@ -36,4 +49,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default withRouter(Account);

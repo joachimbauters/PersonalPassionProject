@@ -8,18 +8,16 @@ const PreLoader = () => {
     <>
       <div className={styles.loader}>
         <div className={styles.loader_flex}>
-          <img
-            className={styles.asteroid}
-            src={asteroid_img}
-            alt="asteroid"
-          ></img>
+          <div className={styles.asteroid}>
+            <img src={asteroid_img} alt="asteroid"></img>
+            <p className={styles.loadingtext}>loading...</p>
+          </div>
           <img
             className={styles.loadergif}
             src={asteroid_loader}
             alt="loader"
           ></img>
         </div>
-        <p className={styles.loadingtext}>loading...</p>
       </div>
     </>
   );

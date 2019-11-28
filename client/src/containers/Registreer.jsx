@@ -65,7 +65,7 @@ class Registreer extends Component {
     };
 
     const update = () => {
-      particleSystem.position.x += 0.005;
+      particleSystem.position.x += 0.008;
     };
 
     const init = () => {

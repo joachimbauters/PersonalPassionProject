@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import LoginForm from "../components/auth/LoginForm";
-import styles from "./Login.module.css";
+import styles from "./PersoonlijkeGegevens.module.css";
 import * as THREE from "three";
+import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { ROUTES } from "../constants";
+import GegevensForm from "../components/auth/GegevensForm";
 
-class Login extends Component {
+class PersoonlijkeGegevens extends Component {
   async componentDidMount() {
     let camera, renderer, scene, particles, particleSystem;
 
@@ -88,7 +91,7 @@ class Login extends Component {
     const yHeight = window.innerHeight;
     return (
       <>
-        <div className={styles.loginGrid}>
+        <div className={styles.gegevensGrid}>
           <div
             style={{ width: xWidth, height: yHeight }}
             className={styles.container}
@@ -98,8 +101,12 @@ class Login extends Component {
           />
           <section className={styles.homeinfogrid}>
             <div className={styles.card}>
-              <h1 className={styles.titel}>Immo Asteroïd</h1>
-              <LoginForm />
+              <div className={styles.back}>
+                <NavLink exact={true} to={ROUTES.landing}>
+                  Terug
+                </NavLink>
+              </div>
+              <GegevensForm />
             </div>
           </section>
         </div>
@@ -108,4 +115,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(PersoonlijkeGegevens);

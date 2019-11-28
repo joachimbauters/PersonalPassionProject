@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import LoginForm from "../components/auth/LoginForm";
-import styles from "./Login.module.css";
+import styles from "./MijnAsteroiden.module.css";
 import * as THREE from "three";
+import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { ROUTES } from "../constants";
+import ActieveBiedingen from "../components/ActieveBiedingen";
+import AfgerondeBestellingen from "../components/AfgerondeBestellingen";
+import GeaccepteerdeBiedingen from "../components/GeaccepteerdeBiedingen";
 
-class Login extends Component {
+class MijnAsteroiden extends Component {
   async componentDidMount() {
     let camera, renderer, scene, particles, particleSystem;
 
@@ -88,7 +93,7 @@ class Login extends Component {
     const yHeight = window.innerHeight;
     return (
       <>
-        <div className={styles.loginGrid}>
+        <div className={styles.asteroidenGrid}>
           <div
             style={{ width: xWidth, height: yHeight }}
             className={styles.container}
@@ -98,8 +103,23 @@ class Login extends Component {
           />
           <section className={styles.homeinfogrid}>
             <div className={styles.card}>
-              <h1 className={styles.titel}>Immo Asteroïd</h1>
-              <LoginForm />
+              <div className={styles.back}>
+                <NavLink exact={true} to={ROUTES.landing}>
+                  Terug
+                </NavLink>
+              </div>
+              <h1 className={styles.titel}>Mijn Asteroïden</h1>
+              <div className={styles.infogrid}>
+                <div className={styles.actieveBiedingen}>
+                  <ActieveBiedingen />
+                </div>
+                <div className={styles.geaccpeteerdeBiedingen}>
+                  <GeaccepteerdeBiedingen />
+                </div>
+                <div className={styles.afgerondeBestellingen}>
+                  <AfgerondeBestellingen />
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -108,4 +128,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(MijnAsteroiden);
