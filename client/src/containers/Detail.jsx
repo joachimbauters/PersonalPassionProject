@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import * as THREE from "three";
-import styles from "./Home.module.css";
-import TabBar from "../components/TabBar";
-import Huren from "../components/Huren";
-import Kopen from "../components/Kopen";
+import styles from "./Detail.module.css";
 import Account from "../components/Account";
 import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../constants";
+import DetailInfo from "../components/DetailInfo";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
-class ThreeContainer extends Component {
+class Detail extends Component {
   // eslint-disable-next-line
   constructor(props) {
     super(props);
@@ -579,7 +579,8 @@ class ThreeContainer extends Component {
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
-    const { astroidesArray } = this.props;
+    const { asteroid } = this.props;
+
     return (
       <>
         <section className={styles.homeGrid}>
@@ -592,21 +593,18 @@ class ThreeContainer extends Component {
           />
           <div className={styles.homeinfogrid}>
             <h1 className={styles.logo}>Immo Asteroïd</h1>
-            <div className={styles.topbar}>
+            <div className={styles.black}></div>
+            <div className={styles.topbarBlack}>
               <Account />
               <Notifications />
             </div>
-            <div className={styles.card}>
-              <TabBar>
-                <div label="Kopen">
-                  <Kopen astroidesArray={astroidesArray} />
-                </div>
-                <div label="Huren">
-                  <Huren />
-                </div>
-              </TabBar>
+            <div className={styles.cardBlack}>
+              <Link className={styles.closebutton} to={ROUTES.landing}>
+                &times;
+              </Link>
+              <DetailInfo asteroid={asteroid} />
             </div>
-            <div className={styles.recentGekocht}>
+            <div className={styles.recentGekochtBlack}>
               <RecentGekocht />
             </div>
           </div>
@@ -616,4 +614,4 @@ class ThreeContainer extends Component {
   }
 }
 
-export default ThreeContainer;
+export default Detail;

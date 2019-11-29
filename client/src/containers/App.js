@@ -6,6 +6,7 @@ import Home from "./Home.jsx";
 import PreLoader from "./Preloader";
 import PersoonlijkeGegevens from "./PersoonlijkeGegevens";
 import Login from "./Login";
+import Detail from "./Detail";
 import Registreer from "./Registreer";
 import MijnAsteroiden from "./MijnAsteroiden";
 
@@ -53,12 +54,37 @@ class App extends Component {
               render={() => <PreLoader />}
             />
           ) : (
-            <Route
-              path={ROUTES.landing}
-              exact
-              strict
-              render={() => <Home astroidesArray={astroidesArray} />}
-            />
+            <>
+              <Route
+                path={ROUTES.landing}
+                exact
+                strict
+                render={() => <Home astroidesArray={astroidesArray} />}
+              />
+              <Route
+                path="/detail/:id"
+                render={({ match }) => {
+                  const id = match.params.id;
+                  const astroidesArray2 = [];
+                  for (let [, value] of Object.entries(astroidesArray)) {
+                    value.forEach(astroid => {
+                      astroidesArray2.push(astroid);
+                    });
+                  }
+                  const asteroid = astroidesArray2.find(item => item.id === id);
+                  return asteroid ? (
+                    <Detail
+                      asteroid={asteroid}
+                      astroidesArray={astroidesArray}
+                      key={id}
+                      id={id}
+                    />
+                  ) : (
+                    <p>error</p>
+                  );
+                }}
+              />
+            </>
           )}
           <Route
             path={ROUTES.gegevens}
