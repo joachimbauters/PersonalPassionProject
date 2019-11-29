@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Account.module.css";
 import userimage from "../assets/user1.png";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants";
 
@@ -30,14 +30,10 @@ const Account = () => {
         ) : (
           <ul className={styles.nav}>
             <li className={styles.navItem}>
-              <NavLink exact={true} to={ROUTES.gegevens}>
-                Persoonlijke gegevens
-              </NavLink>
+              <Link to={ROUTES.gegevens}>Persoonlijke gegevens</Link>
             </li>
             <li className={styles.navItem}>
-              <NavLink exact={true} to={ROUTES.mijnasteroiden}>
-                Mijn Asteroïden
-              </NavLink>
+              <Link to={ROUTES.mijnasteroiden}>Mijn Asteroïden</Link>
             </li>
             <li className={styles.navItem}>
               <button>Uitloggen</button>
