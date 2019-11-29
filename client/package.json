@@ -7,7 +7,6 @@
     "apollo-boost": "^0.3.1",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
-    "apollo-link-rest": "^0.7.3",
     "graphql": "^14.2.1",
     "graphql-anywhere": "4.1.0",
     "js-cookie": "^2.2.0",

@@ -6,11 +6,10 @@
   "author": "Joachim Bauters <joachim.bauters@student.howest.be>",
   "license": "MIT",
   "scripts": {
-    "start": "cd server/ && yarn && yarn start",
+    "start": "cd client/ && yarn && yarn start",
     "build": "cd client/ && yarn && yarn build"
   },
   "cacheDirectories": [
-    "client/node_modules",
-    "server/node_modules"
+    "client/node_modules"
   ]
 }
