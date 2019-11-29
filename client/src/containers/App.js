@@ -84,27 +84,32 @@ class App extends Component {
                   );
                 }}
               />
+              <Route
+                path={ROUTES.gegevens}
+                exact
+                strict
+                render={() => <PersoonlijkeGegevens />}
+              />
+              <Route
+                path={ROUTES.mijnasteroiden}
+                exact
+                strict
+                render={() => <MijnAsteroiden />}
+              />
+              <Route
+                path={ROUTES.login}
+                exact
+                strict
+                render={() => <Login />}
+              />
+              <Route
+                path={ROUTES.registreer}
+                exact
+                strict
+                render={() => <Registreer />}
+              />
             </>
           )}
-          <Route
-            path={ROUTES.gegevens}
-            exact
-            strict
-            render={() => <PersoonlijkeGegevens />}
-          />
-          <Route
-            path={ROUTES.mijnasteroiden}
-            exact
-            strict
-            render={() => <MijnAsteroiden />}
-          />
-          <Route path={ROUTES.login} exact strict render={() => <Login />} />
-          <Route
-            path={ROUTES.registreer}
-            exact
-            strict
-            render={() => <Registreer />}
-          />
         </Switch>
       </>
     );
