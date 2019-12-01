@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Huren.module.css";
+import Astroides from "./asteroides/Asteroides";
 
 const Huren = ({ astroidesArray }) => {
   return (
@@ -15,7 +16,9 @@ const Huren = ({ astroidesArray }) => {
           <option>Afstand laag naar hoog</option>
         </select>
       </div>
-      <section className={styles.astroidelist}></section>
+      <section className={styles.astroidelist}>
+        <Astroides astroidesArray={astroidesArray} />
+      </section>
     </>
   );
 };

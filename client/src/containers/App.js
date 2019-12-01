@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../constants";
+import AuthContext from "../context/auth-context";
 
 import Home from "./Home.jsx";
 import PreLoader from "./Preloader";
@@ -40,77 +41,107 @@ class App extends Component {
         });
       });
   }
+
+  state = {
+    token: null,
+    userId: null
+  };
+
+  login = (token, userId, tokenExpiration) => {
+    this.setState({ token: token, userId: userId });
+  };
+
+  logout = () => {
+    this.setState({ token: null, userId: null });
+  };
+
   render() {
     const { loading, astroidesArray } = this.state;
 
     return (
       <>
-        <Switch>
-          {loading ? (
-            <Route
-              path={ROUTES.landing}
-              exact
-              strict
-              render={() => <PreLoader />}
-            />
-          ) : (
-            <>
-              <Route
-                path={ROUTES.landing}
-                exact
-                strict
-                render={() => <Home astroidesArray={astroidesArray} />}
-              />
-              <Route
-                path="/detail/:id"
-                render={({ match }) => {
-                  const id = match.params.id;
-                  const astroidesArray2 = [];
-                  for (let [, value] of Object.entries(astroidesArray)) {
-                    value.forEach(astroid => {
-                      astroidesArray2.push(astroid);
-                    });
-                  }
-                  const asteroid = astroidesArray2.find(item => item.id === id);
-                  return asteroid ? (
-                    <Detail
-                      asteroid={asteroid}
-                      astroidesArray={astroidesArray}
-                      key={id}
-                      id={id}
-                    />
-                  ) : (
-                    <p>error</p>
-                  );
-                }}
-              />
-              <Route
-                path={ROUTES.gegevens}
-                exact
-                strict
-                render={() => <PersoonlijkeGegevens />}
-              />
-              <Route
-                path={ROUTES.mijnasteroiden}
-                exact
-                strict
-                render={() => <MijnAsteroiden />}
-              />
-              <Route
-                path={ROUTES.login}
-                exact
-                strict
-                render={() => <Login />}
-              />
-              <Route
-                path={ROUTES.registreer}
-                exact
-                strict
-                render={() => <Registreer />}
-              />
-            </>
-          )}
-        </Switch>
+        <React.Fragment>
+          <AuthContext.Provider
+            value={{
+              token: this.state.token,
+              userId: this.state.userId,
+              login: this.login,
+              logout: this.logout
+            }}
+          >
+            <Switch>
+              {loading ? (
+                <Route
+                  path={ROUTES.landing}
+                  exact
+                  strict
+                  render={() => <PreLoader />}
+                />
+              ) : (
+                <>
+                  {!this.state.token && <Redirect from="/" to="/login" exact />}
+                  {this.state.token && <Redirect from="/" to="/" exact />}
+                  {this.state.token && <Redirect from="/login" to="/" exact />}
+                  <Route
+                    path={ROUTES.landing}
+                    exact
+                    strict
+                    render={() => <Home astroidesArray={astroidesArray} />}
+                  />
+                  <Route
+                    path="/detail/:id"
+                    render={({ match }) => {
+                      const id = match.params.id;
+                      const astroidesArray2 = [];
+                      for (let [, value] of Object.entries(astroidesArray)) {
+                        value.forEach(astroid => {
+                          astroidesArray2.push(astroid);
+                        });
+                      }
+                      const asteroid = astroidesArray2.find(
+                        item => item.id === id
+                      );
+                      return asteroid ? (
+                        <Detail
+                          asteroid={asteroid}
+                          astroidesArray={astroidesArray}
+                          key={id}
+                          id={id}
+                        />
+                      ) : (
+                        <p>error</p>
+                      );
+                    }}
+                  />
+                  <Route
+                    path={ROUTES.gegevens}
+                    exact
+                    strict
+                    render={() => <PersoonlijkeGegevens />}
+                  />
+                  <Route
+                    path={ROUTES.mijnasteroiden}
+                    exact
+                    strict
+                    render={() => <MijnAsteroiden />}
+                  />
+                  <Route
+                    path={ROUTES.login}
+                    exact
+                    strict
+                    render={() => <Login />}
+                  />
+                  <Route
+                    path={ROUTES.registreer}
+                    exact
+                    strict
+                    render={() => <Registreer />}
+                  />
+                </>
+              )}
+            </Switch>
+          </AuthContext.Provider>
+        </React.Fragment>
       </>
     );
   }

@@ -149,6 +149,7 @@ background-color: rgba(0, 0, 0, 0.74);
   right: 1.5rem;
   top: 0;
   text-decoration: none;
+  z-index: 999;
 }
 
 .closebutton:active {

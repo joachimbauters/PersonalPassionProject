@@ -27,7 +27,11 @@ class asteroidesList extends Component {
               <div className={styles.nameflex}>
                 <p className={styles.name}>{astroid.name}</p>
                 <p className={styles.price}>
-                  €{Math.round(astroid.absolute_magnitude_h * 10).toFixed(3)}
+                  €
+                  {Math.round(
+                    astroid.estimated_diameter.meters.estimated_diameter_min *
+                      2.23
+                  ) + " / maand"}
                 </p>
               </div>
               <div className={styles.grootteflex}>

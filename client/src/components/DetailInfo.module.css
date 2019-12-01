@@ -1,0 +1,239 @@
+.flexdetail {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+}
+
+.threecontainer {
+  position: relative;
+  width: 50%;
+  height: 50rem;
+  z-index: -1;
+}
+
+.detailinfo {
+  position: relative;
+  pointer-events: all;
+  margin-left: 4rem;
+  width: 100%;
+  z-index: 900;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 2rem;
+}
+
+.detail1 {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.name {
+  color: white;
+  font-weight: 500;
+  font-size: 2.4rem;
+}
+
+.price {
+  color: #ffb101;
+  font-weight: 200;
+  font-size: 3.6rem;
+}
+
+.price span {
+  font-weight: 900;
+  font-size: 3.6rem;
+}
+
+.infogrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 2rem;
+}
+
+.grootteflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 3.2rem;
+}
+
+.afstandflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 3.2rem;
+}
+
+.snelheidflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 3.2rem;
+}
+
+.info {
+  color: rgba(255, 255, 255, 0.47);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.infotext {
+  color: rgba(255, 255, 255, 0.47);
+  font-weight: 200;
+  font-size: 1.4rem;
+}
+
+.buttons {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.huurnubtn {
+  color: rgb(255, 177, 1);
+  background-color: rgb(255, 177, 1, 0.23);
+  border: none;
+  outline: none;
+  height: 3rem;
+  width: 10rem;
+  border-radius: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.huurnubtn:hover {
+  background-color: rgb(255, 177, 1, 0.3);
+}
+
+.infobtn {
+  width: 17rem;
+  height: 3rem;
+  color: white;
+  background-color: rgb(255, 255, 255, 0.23);
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-left: 2rem;
+}
+.infobtn:hover {
+  background-color: rgb(255, 255, 255, 0.3);
+}
+
+.cardinfo {
+  width: 100%;
+  height: 27rem;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .cardinfo {
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.lineOuter {
+  width: 100%;
+  height: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.23);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.lineInner1 {
+  height: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  background: rgb(251, 194, 235);
+  background: linear-gradient(
+    151deg,
+    rgba(251, 194, 235, 1) 0%,
+    rgba(166, 193, 238, 1) 100%
+  );
+  animation: animate 4s;
+  animation-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.lineInner2 {
+  height: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  background: rgb(102, 166, 255);
+  background: linear-gradient(
+    151deg,
+    rgba(102, 166, 255, 1) 0%,
+    rgba(137, 247, 254, 1) 100%
+  );
+  animation: animate 4s;
+  animation-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.lineInner3 {
+  height: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  background: rgb(199, 29, 111);
+  background: linear-gradient(
+    151deg,
+    rgba(199, 29, 111, 1) 0%,
+    rgba(208, 150, 147, 1) 100%
+  );
+  animation: animate 4s;
+  animation-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.lineInner4 {
+  height: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  background: rgb(171, 236, 214);
+  background: linear-gradient(
+    151deg,
+    rgba(171, 236, 214, 1) 0%,
+    rgba(251, 237, 150, 1) 100%
+  );
+  animation: animate 4s;
+  animation-timing-function: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+@keyframes animate {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.charttitle {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.35rem;
+  margin-bottom: 2rem;
+}
+
+.flexchart {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.flexchart p {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}

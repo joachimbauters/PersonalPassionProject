@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./Home.module.css";
-import TabBar from "../components/TabBar";
 import Huren from "../components/Huren";
-import Kopen from "../components/Kopen";
 import Account from "../components/Account";
 import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
@@ -362,16 +360,16 @@ class ThreeContainer extends Component {
           const s = 1 + this.size;
           c.mesh.scale.set(s, s, s);
 
-          var canvas1 = document.createElement("canvas");
-          var context1 = canvas1.getContext("2d");
+          const canvas1 = document.createElement("canvas");
+          const context1 = canvas1.getContext("2d");
           context1.font = "300 50px Verdana";
           context1.fillStyle = "rgba(255,255,255,1)";
           context1.fillText(asteroid.name, 0, 50);
 
-          var texture1 = new THREE.Texture(canvas1);
+          const texture1 = new THREE.Texture(canvas1);
           texture1.needsUpdate = true;
 
-          var material1 = new THREE.MeshBasicMaterial({
+          const material1 = new THREE.MeshBasicMaterial({
             map: texture1,
             side: THREE.DoubleSide
           });
@@ -597,14 +595,9 @@ class ThreeContainer extends Component {
               <Notifications />
             </div>
             <div className={styles.card}>
-              <TabBar>
-                <div label="Kopen">
-                  <Kopen astroidesArray={astroidesArray} />
-                </div>
-                <div label="Huren">
-                  <Huren />
-                </div>
-              </TabBar>
+              <div>
+                <Huren astroidesArray={astroidesArray} />
+              </div>
             </div>
             <div className={styles.recentGekocht}>
               <RecentGekocht />

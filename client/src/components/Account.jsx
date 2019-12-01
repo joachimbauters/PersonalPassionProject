@@ -4,6 +4,7 @@ import userimage from "../assets/user1.png";
 import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants";
+import Logout from "./auth/Logout";
 
 const Account = () => {
   const [selected, setSelected] = React.useState(true);
@@ -40,7 +41,7 @@ const Account = () => {
               </NavLink>
             </li>
             <li className={styles.navItem}>
-              <button>Uitloggen</button>
+              <Logout />
             </li>
           </ul>
         )}
