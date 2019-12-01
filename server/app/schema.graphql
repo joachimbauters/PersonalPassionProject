@@ -1,16 +1,25 @@
 type Query {
   users: [User]!
   user(id: String!): User
+  notification(id: String!): Notification
 }
 
 type Mutation {
-  createUser(userInput: UserInput): User
+  createUser(userInput: UserInput!): User
+  updateUser(
+    _id: String!
+    naam: String!
+    image: String!
+    email: String!
+    wachtwoord: String!
+  ): User
   login(email: String!, wachtwoord: String!): AuthData
 }
 
 type User {
   _id: ID
   naam: String
+  image: String
   email: String
   wachtwoord: String
 }
@@ -25,4 +34,15 @@ type AuthData {
   userId: ID!
   token: String!
   tokenExpiration: Int!
+}
+
+type Notification {
+  _id: ID!
+  text: String!
+}
+
+type Abbonement {
+  _id: ID!
+  userId: ID!
+  asteroidId: ID!
 }

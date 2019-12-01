@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Account.module.css";
-import userimage from "../assets/user1.png";
 import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants";
 import Logout from "./auth/Logout";
+import AccountCard from "./AccountCard";
 
 const Account = () => {
   const [selected, setSelected] = React.useState(true);
@@ -18,13 +18,7 @@ const Account = () => {
             setSelected(!selected);
           }}
         >
-          <div className={styles.label}>
-            <img src={userimage} alt="user" />
-            <div className={styles.flextext}>
-              <span>Welkom,</span>
-              <span>Emilee Simchenko</span>
-            </div>
-          </div>
+          <AccountCard />
         </button>
         {selected ? (
           <></>

@@ -1,0 +1,32 @@
+.previewImage {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 5rem;
+  margin-left: 2rem;
+}
+
+.imagepreviewsflex {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.draganddrop {
+  height: 10rem;
+  width: 100%;
+  border: 0.1rem solid rgba(255, 255, 255, 0.23);
+  border-radius: 1rem;
+  padding: 2rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.draganddrop:hover {
+  border: 0.1rem solid rgba(255, 255, 255, 0.4);
+}
+
+.draganddrop p {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.5rem;
+}

@@ -68,6 +68,7 @@ class LoginForm extends Component {
                     ref={this.emailEl}
                     placeholder="you@mail.com"
                     className={styles.formInput}
+                    required
                   />
                 </div>
                 <div className={styles.formFlex2}>
@@ -81,6 +82,7 @@ class LoginForm extends Component {
                     ref={this.wachtwoordEl}
                     placeholder="Enter een wachtwoord"
                     className={styles.formInput}
+                    required
                   />
                 </div>
               </div>

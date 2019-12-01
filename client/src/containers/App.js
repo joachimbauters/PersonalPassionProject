@@ -4,6 +4,7 @@ import { ROUTES } from "../constants";
 import AuthContext from "../context/auth-context";
 
 import Home from "./Home.jsx";
+import SubscribeUser from "./SubscribeUser";
 import PreLoader from "./Preloader";
 import PersoonlijkeGegevens from "./PersoonlijkeGegevens";
 import Login from "./Login";
@@ -80,7 +81,6 @@ class App extends Component {
               ) : (
                 <>
                   {!this.state.token && <Redirect from="/" to="/login" exact />}
-                  {this.state.token && <Redirect from="/" to="/" exact />}
                   {this.state.token && <Redirect from="/login" to="/" exact />}
                   <Route
                     path={ROUTES.landing}
@@ -124,6 +124,12 @@ class App extends Component {
                     exact
                     strict
                     render={() => <MijnAsteroiden />}
+                  />
+                  <Route
+                    path={ROUTES.subscription}
+                    exact
+                    strict
+                    render={() => <SubscribeUser />}
                   />
                   <Route
                     path={ROUTES.login}

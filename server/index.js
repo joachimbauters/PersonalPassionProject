@@ -27,15 +27,15 @@ const server = new GraphQLServer({
   resolvers
 });
 
-//server.express.use(express.static(path.resolve(__dirname, "../client/build")));
+server.express.use(express.static(path.resolve(__dirname, "../client/build")));
 server.express.use(isAuth);
 
 server.express.use(cookieParser());
 server.express.use(bodyParser.urlencoded({ extended: true }));
-server.express.use(bodyParser.json());
+server.express.use(bodyParser.json({ limit: "100mb" }));
 
-// server.express.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-// });
+server.express.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
 
 server.start(() => console.log(`Server is running on ${process.env.PORT}`));

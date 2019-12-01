@@ -19,7 +19,7 @@ module.exports = {
       }
       const token = jwt.sign(
         { userId: user.id, email: user.email },
-        "somesupersecretkey",
+        process.env.SECRET,
         {
           expiresIn: "1h"
         }
@@ -37,10 +37,10 @@ module.exports = {
         }
 
         const hashedPassword = await bcrypt.hash(userInput.wachtwoord, 12);
-        console.log(hashedPassword);
 
         const user = new User({
           naam: userInput.naam,
+          image: null,
           email: userInput.email,
           wachtwoord: hashedPassword
         });
@@ -48,6 +48,28 @@ module.exports = {
         const result = await user.save();
 
         return { ...result._doc, wachtwoord: null, _id: result.id };
+      } catch (err) {
+        throw err;
+      }
+    },
+    updateUser: async (_, { _id, naam, image, email, wachtwoord }) => {
+      try {
+        const hashedPassword = await bcrypt.hash(wachtwoord, 12);
+
+        const user = await User.findByIdAndUpdate(
+          _id,
+          { naam, image, email, wachtwoord: hashedPassword },
+          {
+            new: true
+          }
+        );
+        console.log(user);
+
+        if (!user) {
+          throw new Error("Gebruiker niet gevonden.");
+        }
+
+        return user;
       } catch (err) {
         throw err;
       }
