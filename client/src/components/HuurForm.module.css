@@ -1,0 +1,152 @@
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 20rem;
+  width: 50rem;
+  justify-content: space-between;
+}
+
+.titel {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 700;
+}
+
+.bevestighuur {
+  background-color: rgb(255, 177, 1, 0.23);
+  border: none;
+  color: rgb(255, 177, 1);
+  height: 4rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+}
+.bevestighuur:hover {
+  background-color: rgb(255, 177, 1, 0.3);
+}
+
+.registreer a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+
+.formFlex2 {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.formtext {
+  color: rgba(255, 255, 255, 0.61);
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 4rem;
+}
+
+.formInputNaam {
+  margin-right: 1rem;
+  margin-left: 1rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 2.5rem;
+  border-bottom: 0.1rem solid white;
+  outline: none;
+  width: 20rem;
+}
+
+.checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.checkbox {
+  display: inline-block;
+  width: 2.5rem;
+  margin-right: 1rem;
+}
+
+.checkbox label {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.checkbox label::before {
+  content: "";
+  display: inline-block;
+  height: 2.5rem;
+  width: 2.5rem;
+  border: 0.1rem solid white;
+}
+
+.checkbox label::after {
+  content: "";
+  display: inline-block;
+  height: 0.6rem;
+  width: 0.9rem;
+  border-left: 0.2rem solid white;
+  border-bottom: 0.2rem solid white;
+
+  transform: rotate(-45deg);
+}
+
+.checkbox label {
+  position: relative;
+}
+.checkbox label::before,
+.checkbox label::after {
+  position: absolute;
+}
+
+/*Checkmark*/
+.checkbox label::after {
+  left: 0.8rem;
+  top: 0.95rem;
+}
+
+/*Outer-box*/
+.checkbox label::before {
+  top: 0.3rem;
+}
+/*Checkmark*/
+.checkbox label::after {
+  left: 0.8rem;
+  top: 0.95rem;
+}
+
+/*Hide the checkmark by default*/
+.checkbox input[type="checkbox"] + label::after {
+  content: none;
+}
+/*Unhide the checkmark on the checked state*/
+.checkbox input[type="checkbox"]:checked + label::after {
+  content: "";
+}
+
+.highlight {
+  color: #ffb101;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.highlight2 {
+  font-weight: 400;
+  font-size: 2.5rem;
+}

@@ -24,18 +24,19 @@ const resolvers = require("./app/resolvers.js");
 
 const server = new GraphQLServer({
   typeDefs: `${__dirname}/app/schema.graphql`,
-  resolvers
+  resolvers,
+  context: req => ({ ...req })
 });
 
-server.express.use(express.static(path.resolve(__dirname, "../client/build")));
+//server.express.use(express.static(path.resolve(__dirname, "../client/build")));
 server.express.use(isAuth);
 
 server.express.use(cookieParser());
 server.express.use(bodyParser.urlencoded({ extended: true }));
-server.express.use(bodyParser.json({ limit: "100mb" }));
+server.express.use(bodyParser.json({ limit: "50mb" }));
 
-server.express.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-});
+// server.express.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+// });
 
 server.start(() => console.log(`Server is running on ${process.env.PORT}`));

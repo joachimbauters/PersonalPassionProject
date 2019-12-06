@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import styles from "./MijnAsteroiden.module.css";
+import styles from "./Order.module.css";
 import * as THREE from "three";
 import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import { ROUTES } from "../constants";
-import ActieveAsteroiden from "../components/ActieveAsteroiden";
-import MijnAsteroidLijst from "../components/MijnAsteroidLijst";
-import AuthContext from "../context/auth-context";
+import HuurForm from "../components/HuurForm";
+import Samenvatting from "../components/Samenvatting";
 
-class MijnAsteroiden extends Component {
+class Order extends Component {
+  // eslint-disable-next-line
+  constructor(props) {
+    super(props);
+  }
+  // eslint-enable-next-line
+
   async componentDidMount() {
     let camera, renderer, scene, particles, particleSystem;
 
@@ -91,44 +95,37 @@ class MijnAsteroiden extends Component {
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
+    const { asteroid } = this.props;
     return (
-      <AuthContext.Consumer>
-        {context => {
-          return (
-            <>
-              <div className={styles.asteroidenGrid}>
-                <div
-                  style={{ width: xWidth, height: yHeight }}
-                  className={styles.container}
-                  ref={mount => {
-                    this.mount = mount;
-                  }}
-                />
-                <section className={styles.homeinfogrid}>
-                  <div className={styles.card}>
-                    <div className={styles.back}>
-                      <NavLink exact={true} to={ROUTES.landing}>
-                        Terug
-                      </NavLink>
-                    </div>
-                    <h1 className={styles.titel}>Mijn Asteroïden</h1>
-                    <div className={styles.infogrid}>
-                      <div className={styles.actieveBiedingen}>
-                        <ActieveAsteroiden context={context} />
-                      </div>
-                      <div className={styles.afgerondeBestellingen}>
-                        <MijnAsteroidLijst context={context} />
-                      </div>
-                    </div>
-                  </div>
-                </section>
+      <>
+        <div className={styles.loginGrid}>
+          <div
+            style={{ width: xWidth, height: yHeight }}
+            className={styles.container}
+            ref={mount => {
+              this.mount = mount;
+            }}
+          />
+          <section className={styles.homeinfogrid}>
+            <div className={styles.card}>
+              <div className={styles.cardflexbooking}>
+                <div className={styles.back}>
+                  <NavLink exact={true} to={`/detail/${asteroid.id}`}>
+                    Terug
+                  </NavLink>
+                </div>
+                <h1 className={styles.titel}>Bevestig huur {asteroid.name}</h1>
+                <HuurForm asteroid={asteroid} />
               </div>
-            </>
-          );
-        }}
-      </AuthContext.Consumer>
+              <div>
+                <Samenvatting asteroid={asteroid} />
+              </div>
+            </div>
+          </section>
+        </div>
+      </>
     );
   }
 }
 
-export default withRouter(MijnAsteroiden);
+export default withRouter(Order);

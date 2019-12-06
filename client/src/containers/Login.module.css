@@ -21,14 +21,13 @@
   }
 
 .card{
-  height: 100%;
   border-radius: 2rem;
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   padding: 4rem;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import styles from "./DetailInfo.module.css";
+import { Link } from "react-router-dom";
 
 class DetailInfo extends Component {
   // eslint-disable-next-line
@@ -30,7 +31,6 @@ class DetailInfo extends Component {
         2;
 
       this.size = average;
-      console.log(this.size);
 
       // Create a Camera
       const fov = 30;
@@ -41,13 +41,10 @@ class DetailInfo extends Component {
       camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       if (this.size >= 0.5) {
         camera.position.y = 5 * this.size;
-        console.log("tegroot");
       } else if (this.size >= 0.1 && this.size <= 0.5) {
         camera.position.y = 7 * this.size;
-        console.log("middelmatig");
       } else {
         camera.position.y = 3 * this.size * 5;
-        console.log("teklein");
       }
       camera.up.set(1, 0, 0);
       camera.lookAt(0, 0, 0);
@@ -224,7 +221,6 @@ class DetailInfo extends Component {
                   </p>
                   <p className={styles.infotext}>Grootte</p>
                 </div>
-                {console.log(asteroid)}
                 <div className={styles.afstandflex}>
                   <p className={styles.info}>
                     {asteroid.close_approach_data.map(
@@ -247,7 +243,9 @@ class DetailInfo extends Component {
                 </div>
               </div>
               <div className={styles.buttons}>
-                <button className={styles.huurnubtn}>Huur nu</button>
+                <Link className={styles.huurnubtn} to={`/order/${asteroid.id}`}>
+                  Huur nu
+                </Link>
                 <a
                   className={styles.infobtn}
                   href={asteroid.nasa_jpl_url}

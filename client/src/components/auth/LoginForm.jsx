@@ -7,6 +7,7 @@ import facebook_icon from "../../assets/facebook.svg";
 import { ROUTES } from "../../constants";
 import LOGIN_USER from "../../graphql/loginUser";
 import AuthContext from "../../context/auth-context";
+import loader from "../../assets/preloadlogin.svg";
 
 class LoginForm extends Component {
   static contextType = AuthContext;
@@ -32,6 +33,7 @@ class LoginForm extends Component {
         wachtwoord: wachtwoord
       }
     });
+
     this.emailEl.current.value = "";
     this.wachtwoordEl.current = "";
   };
@@ -49,7 +51,7 @@ class LoginForm extends Component {
           }
         }}
       >
-        {login => (
+        {(login, { loading, error }) => (
           <>
             <form
               className={styles.form}
@@ -57,6 +59,11 @@ class LoginForm extends Component {
             >
               <h2 className={styles.titel}>Login</h2>
               <div className={styles.formflex}>
+                {error ? (
+                  <p className={styles.error}>Verkeerde login</p>
+                ) : (
+                  <></>
+                )}
                 <div className={styles.formFlex2}>
                   <label htmlFor="email" className={styles.formLabel}>
                     Email adres
@@ -91,7 +98,13 @@ class LoginForm extends Component {
                   <img src={facebook_icon} alt="facebook_icon"></img>
                   <p>Log in met Facebook</p>
                 </button>
-                <input type="submit" value="login" className={styles.btn} />
+                {loading ? (
+                  <button className={styles.btn}>
+                    <img src={loader} alt="loader" className={styles.loader} />
+                  </button>
+                ) : (
+                  <input type="submit" value="login" className={styles.btn} />
+                )}
               </div>
               <div className={styles.registreer}>
                 <NavLink exact={true} to={ROUTES.registreer}>

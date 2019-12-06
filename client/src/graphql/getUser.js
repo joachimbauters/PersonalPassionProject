@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query user($id: String!) {
-    user(id: $id) {
+  query user {
+    user {
       naam
       image
       email

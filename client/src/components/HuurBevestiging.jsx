@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import styles from "./MijnAsteroiden.module.css";
+import styles from "./HuurBevestiging.module.css";
 import * as THREE from "three";
-import { NavLink } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import { ROUTES } from "../constants";
-import ActieveAsteroiden from "../components/ActieveAsteroiden";
-import MijnAsteroidLijst from "../components/MijnAsteroidLijst";
-import AuthContext from "../context/auth-context";
 
-class MijnAsteroiden extends Component {
+class HuurBevestiging extends Component {
   async componentDidMount() {
     let camera, renderer, scene, particles, particleSystem;
 
@@ -88,47 +82,34 @@ class MijnAsteroiden extends Component {
     };
     init();
   }
+
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
     return (
-      <AuthContext.Consumer>
-        {context => {
-          return (
-            <>
-              <div className={styles.asteroidenGrid}>
-                <div
-                  style={{ width: xWidth, height: yHeight }}
-                  className={styles.container}
-                  ref={mount => {
-                    this.mount = mount;
-                  }}
-                />
-                <section className={styles.homeinfogrid}>
-                  <div className={styles.card}>
-                    <div className={styles.back}>
-                      <NavLink exact={true} to={ROUTES.landing}>
-                        Terug
-                      </NavLink>
-                    </div>
-                    <h1 className={styles.titel}>Mijn Asteroïden</h1>
-                    <div className={styles.infogrid}>
-                      <div className={styles.actieveBiedingen}>
-                        <ActieveAsteroiden context={context} />
-                      </div>
-                      <div className={styles.afgerondeBestellingen}>
-                        <MijnAsteroidLijst context={context} />
-                      </div>
-                    </div>
-                  </div>
-                </section>
+      <>
+        <div className={styles.loginGrid}>
+          <div
+            style={{ width: xWidth, height: yHeight }}
+            className={styles.container}
+            ref={mount => {
+              this.mount = mount;
+            }}
+          />
+          <section className={styles.homeinfogrid}>
+            <div className={styles.card}>
+              <p className={styles.titel}>Jouw asteroïde - naam is klaar!</p>
+              <p className={styles.subtitle}>Bestelling was succesvol</p>
+              <div className={styles.btn_flex}>
+                <button className={styles.btn1}>Terug naar home</button>
+                <button className={styles.btn2}>Mijn Asteroïden</button>
               </div>
-            </>
-          );
-        }}
-      </AuthContext.Consumer>
+            </div>
+          </section>
+        </div>
+      </>
     );
   }
 }
 
-export default withRouter(MijnAsteroiden);
+export default HuurBevestiging;

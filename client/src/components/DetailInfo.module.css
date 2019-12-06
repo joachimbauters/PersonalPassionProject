@@ -15,8 +15,8 @@
   position: relative;
   pointer-events: all;
   margin-left: 4rem;
-  width: 100%;
   z-index: 900;
+  width: 50%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr;
@@ -102,6 +102,10 @@
   font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
 }
 
 .huurnubtn:hover {

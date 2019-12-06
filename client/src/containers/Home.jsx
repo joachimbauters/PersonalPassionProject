@@ -5,9 +5,11 @@ import Huren from "../components/Huren";
 import Account from "../components/Account";
 import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
+import AsteroidContext from "../context/asteroid-context";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 class ThreeContainer extends Component {
+  static contextType = AsteroidContext;
   // eslint-disable-next-line
   constructor(props) {
     super(props);
@@ -26,6 +28,8 @@ class ThreeContainer extends Component {
       sputnik2;
 
     const { astroidesArray } = this.props;
+
+    this.context.setAsteroiden(astroidesArray);
 
     const astroidesArray2 = [];
     for (let [, value] of Object.entries(astroidesArray)) {

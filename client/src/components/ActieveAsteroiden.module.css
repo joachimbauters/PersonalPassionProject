@@ -1,0 +1,101 @@
+.titel {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.astroidItem {
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.23);
+  display: grid;
+  grid-template-columns: 20rem 2rem 10rem 2rem 15rem 1fr min-content;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  height: 7rem;
+}
+
+.nameflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.name {
+  color: white;
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  color: #ffb101;
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+.grootteflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 3rem;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.afstandflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  height: 3rem;
+  grid-column: 5 / 6;
+  grid-row: 1 / 2;
+}
+
+.info {
+  color: rgba(255, 255, 255, 0.47);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.infotext {
+  color: rgba(255, 255, 255, 0.47);
+  font-weight: 200;
+  font-size: 1.4rem;
+}
+
+.buttonflex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 100%;
+  grid-column: 7 / 8;
+  grid-row: 1 / 2;
+}
+
+.button {
+  width: 10rem;
+  height: 3.2rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: rgba(219, 64, 66, 0.23);
+  color: #db4042;
+  font-weight: 500;
+  font-size: 1.4rem;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button:hover {
+  background-color: rgba(219, 64, 66, 0.4);
+}
+
+.list {
+  height: 40rem;
+  overflow: scroll;
+}

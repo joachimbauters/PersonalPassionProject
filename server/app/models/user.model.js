@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema(
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema(
   {
     naam: { type: String, required: true },
     image: { type: String },
     email: { type: String, required: true, unique: true },
-    wachtwoord: { type: String, required: true }
+    wachtwoord: { type: String, required: true },
+    createdAbbonementen: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Abbonement"
+      }
+    ]
   },
   {
     timestamps: true

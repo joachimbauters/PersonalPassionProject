@@ -8,8 +8,13 @@ import stockUser from "../assets/user1.png";
 const AccountCard = () => (
   <AuthContext.Consumer>
     {context => {
+      const Options = {
+        headers: {
+          Authorization: context.userId ? `Bearer ${context.token}` : ""
+        }
+      };
       return (
-        <Query query={GET_USER} variables={{ id: context.userId }}>
+        <Query query={GET_USER} context={Options}>
           {({ loading, error, data: { user } }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error :( </p>;

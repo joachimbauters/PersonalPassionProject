@@ -24,7 +24,7 @@ class GegevensForm extends Component {
     this.setState({ file: file });
   };
 
-  submitHandler = (e, updateUser, id) => {
+  submitHandler = (e, updateUser, id, context) => {
     e.preventDefault();
 
     const naam = this.naamEl.current.value;
@@ -38,6 +38,8 @@ class GegevensForm extends Component {
     ) {
       return;
     }
+
+    console.log(id);
 
     updateUser({
       variables: {
@@ -72,7 +74,9 @@ class GegevensForm extends Component {
                     return (
                       <>
                         <form
-                          onSubmit={e => this.submitHandler(e, updateUser, id)}
+                          onSubmit={e =>
+                            this.submitHandler(e, updateUser, id, context)
+                          }
                           className={styles.form}
                         >
                           <h2 className={styles.titel}>
@@ -94,7 +98,7 @@ class GegevensForm extends Component {
                                 name="naam"
                                 id="naam"
                                 ref={this.naamEl}
-                                placeholder={user.naam}
+                                defaultValue={user.naam}
                                 className={styles.formInput}
                                 required
                               />
@@ -111,7 +115,7 @@ class GegevensForm extends Component {
                                 name="email"
                                 id="email"
                                 ref={this.emailEl}
-                                placeholder={user.email}
+                                defaultValue={user.email}
                                 className={styles.formInput}
                                 required
                               />

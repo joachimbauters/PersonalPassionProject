@@ -1,7 +1,11 @@
+scalar Date
+
 type Query {
   users: [User]!
-  user(id: String!): User
-  notification(id: String!): Notification
+  user: User!
+  notification(id: String!): Notification!
+  abbonementen: [Abbonement]!
+  abbonement(id: String!): Abbonement!
 }
 
 type Mutation {
@@ -14,14 +18,27 @@ type Mutation {
     wachtwoord: String!
   ): User
   login(email: String!, wachtwoord: String!): AuthData
+  createAbbonement(abbonementInput: AbbonementInput!): Abbonement
 }
 
 type User {
-  _id: ID
-  naam: String
+  _id: String!
+  naam: String!
   image: String
-  email: String
-  wachtwoord: String
+  email: String!
+  wachtwoord: String!
+  createdAbbonementen: [Abbonement!]
+}
+
+type Abbonement {
+  _id: String!
+  asteroidId: String!
+  price: Int!
+  naam: String!
+  startTime: String!
+  endTime: String!
+  active: Boolean!
+  userId: User!
 }
 
 input UserInput {
@@ -30,19 +47,22 @@ input UserInput {
   wachtwoord: String!
 }
 
+input AbbonementInput {
+  asteroidId: String!
+  price: Int!
+  naam: String!
+  startTime: String!
+  endTime: String!
+  active: Boolean!
+}
+
 type AuthData {
-  userId: ID!
+  userId: String!
   token: String!
   tokenExpiration: Int!
 }
 
 type Notification {
-  _id: ID!
+  _id: String!
   text: String!
-}
-
-type Abbonement {
-  _id: ID!
-  userId: ID!
-  asteroidId: ID!
 }

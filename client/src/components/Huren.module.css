@@ -22,7 +22,7 @@
   -webkit-border-radius: 0;
   border-radius: 2.5rem;
   padding-left: 2rem;
-  border: 0.3rem solid #ffb101;
+  border: 0.3rem solid rgba(255, 255, 255, 0.23);
   color: white;
   font-weight: 500;
   font-size: 1.4rem;
