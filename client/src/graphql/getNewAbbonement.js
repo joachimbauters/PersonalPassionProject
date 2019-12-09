@@ -1,11 +1,10 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query abbonementen {
-    abbonementen {
-      asteroidId
+  subscription newAbbonement {
+    newAbbonement {
       naam
-      active
+      asteroidId
       user {
         image
       }

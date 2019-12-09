@@ -1,48 +1,22 @@
 import React, { Component } from "react";
-import img from "../assets/user1.png";
+//import img from "../assets/user1.png";
 import styles from "./RecentGekocht.module.css";
-
+import { Subscription } from "react-apollo";
+import GET_NEWABBONEMENT from "../graphql/getNewAbbonement";
 class RecentGekocht extends Component {
   render() {
     return (
-      <ul className={styles.list}>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-        <li className={styles.item}>
-          <img src={img} alt="user" />
-          <p>
-            Heeft zojuist <span>(2015 RC)</span> gekocht
-          </p>
-        </li>
-      </ul>
+      <Subscription subscription={GET_NEWABBONEMENT}>
+        {() => {
+          return (
+            <ul className={styles.list}>
+              <li className={styles.item}>
+                <p>ggg</p>
+              </li>
+            </ul>
+          );
+        }}
+      </Subscription>
     );
   }
 }

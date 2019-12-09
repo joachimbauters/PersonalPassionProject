@@ -4,7 +4,7 @@
   grid-template-columns: 15rem 2rem 10rem 2rem 15rem 1fr min-content;
   padding-bottom: 1rem;
   padding-top: 1rem;
-  height: 6rem;
+  height: 8rem;
 }
 
 .nameflex {
@@ -19,6 +19,14 @@
   color: white;
   font-weight: 500;
   font-size: 1.6rem;
+  line-height: 2rem;
+}
+
+.namecustom {
+  color: #f04545;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 2rem;
 }
 
 .price {
@@ -85,4 +93,29 @@
 
 .button:hover {
   background-color: rgba(255, 255, 255, 0.4);
+}
+
+.buttonRent {
+  width: 11rem;
+  height: 3.5rem;
+  border-radius: 2rem;
+  border: none;
+  background-color: rgba(240, 69, 69, 0.23);
+  color: #f04545;
+  font-weight: 500;
+  font-size: 1.4rem;
+  outline: none;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1.5rem;
+}
+
+.btnImg {
+  width: 2rem;
+  border-radius: 1rem;
+  height: 2rem;
+  border-radius: 1rem;
+  margin-top: 0.1rem;
 }

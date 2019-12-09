@@ -45,7 +45,7 @@ class ThreeContainer extends Component {
     const createCamera = () => {
       // Create a Camera
       const fov = 30;
-      const aspect = window.innerWidth / window.innerHeight;
+      const aspect = window.innerWidth / 2 / window.innerHeight;
       const near = 0.1;
       const far = 7000;
 
@@ -60,7 +60,7 @@ class ThreeContainer extends Component {
         antialias: true,
         alpha: true
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth / 2, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setClearColor(0x000000, 0);
       this.mount.appendChild(renderer.domElement);
@@ -545,15 +545,15 @@ class ThreeContainer extends Component {
     };
 
     const onWindowResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = window.innerWidth / 2 / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(window.innerWidth / 2, window.innerHeight);
     };
 
     const init = () => {
       scene = new THREE.Scene();
       scene.updateMatrixWorld(true);
-      scene.position.x = 15;
+      // scene.position.x = 15;
 
       stars();
       createCamera();
@@ -579,14 +579,11 @@ class ThreeContainer extends Component {
   }
 
   render() {
-    const xWidth = window.innerWidth;
-    const yHeight = window.innerHeight;
     const { astroidesArray } = this.props;
     return (
       <>
         <section className={styles.homeGrid}>
           <div
-            style={{ width: xWidth, height: yHeight }}
             className={styles.container}
             ref={mount => {
               this.mount = mount;

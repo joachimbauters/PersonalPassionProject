@@ -9,16 +9,20 @@ type Query {
 }
 
 type Mutation {
-  createUser(userInput: UserInput!): User
+  createUser(userInput: UserInput!): User!
   updateUser(
-    _id: String!
     naam: String!
     image: String!
     email: String!
     wachtwoord: String!
-  ): User
-  login(email: String!, wachtwoord: String!): AuthData
-  createAbbonement(abbonementInput: AbbonementInput!): Abbonement
+  ): User!
+  login(email: String!, wachtwoord: String!): AuthData!
+  createAbbonement(abbonementInput: AbbonementInput!): Abbonement!
+  cancelAbbonement(abbonementId: String!): Abbonement!
+}
+
+type Subscription {
+  newAbbonement: Abbonement
 }
 
 type User {
@@ -38,7 +42,7 @@ type Abbonement {
   startTime: String!
   endTime: String!
   active: Boolean!
-  userId: User!
+  user: User!
 }
 
 input UserInput {

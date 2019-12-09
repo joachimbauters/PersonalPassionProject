@@ -3,7 +3,10 @@ import { Mutation } from "react-apollo";
 import styles from "./HuurForm.module.css";
 import { withRouter } from "react-router-dom";
 import CREATE_ABBONEMENT from "../graphql/createAbbonement";
+import GET_ABBONEMENTEN from "../graphql/getAbbonementen";
 import AuthContext from "../context/auth-context";
+import { ROUTES } from "../constants";
+
 class HuurForm extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +24,7 @@ class HuurForm extends Component {
     }
   };
 
-  submitHandler = (e, createAbbonement) => {
+  submitHandler = (e, createAbbonement, id) => {
     e.preventDefault();
 
     const { asteroid } = this.props;
@@ -53,10 +56,13 @@ class HuurForm extends Component {
     });
 
     this.naamEl.current.value = "";
-    this.setState({ checked: !this.state.checked });
+    this.setState({ checked: false });
+
+    this.props.history.push(ROUTES.huurbevestiging);
   };
 
   render() {
+    const { asteroid } = this.props;
     return (
       <AuthContext.Consumer>
         {context => {
@@ -65,13 +71,29 @@ class HuurForm extends Component {
               Authorization: context.userId ? `Bearer ${context.token}` : ""
             }
           };
+
+          const id = context.userId;
           return (
-            <Mutation mutation={CREATE_ABBONEMENT} context={Options}>
+            <Mutation
+              mutation={CREATE_ABBONEMENT}
+              context={Options}
+              update={(cache, { data: { createAbbonement } }) => {
+                const { abbonementen } = cache.readQuery({
+                  query: GET_ABBONEMENTEN
+                });
+                cache.writeQuery({
+                  query: GET_ABBONEMENTEN,
+                  data: {
+                    abbonementen: abbonementen.concat([createAbbonement])
+                  }
+                });
+              }}
+            >
               {createAbbonement => (
                 <>
                   <form
                     className={styles.form}
-                    onSubmit={e => this.submitHandler(e, createAbbonement)}
+                    onSubmit={e => this.submitHandler(e, createAbbonement, id)}
                   >
                     <div className={styles.formflex}>
                       <div className={styles.formFlex2}>
@@ -98,7 +120,11 @@ class HuurForm extends Component {
                           </div>
                           Bevestig dat ik deze wil huren voor{" "}
                           <span className={styles.highlight}>
-                            €700{" "}
+                            €
+                            {Math.round(
+                              asteroid.estimated_diameter.meters
+                                .estimated_diameter_min * 2.23
+                            )}{" "}
                             <span className={styles.highlight2}>/ maand</span>
                           </span>
                           .

@@ -1,5 +1,5 @@
 const express = require("express");
-const { GraphQLServer } = require("graphql-yoga");
+const { GraphQLServer, PubSub } = require("graphql-yoga");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -22,10 +22,12 @@ mongoose
 
 const resolvers = require("./app/resolvers.js");
 
+const pubsub = new PubSub();
+
 const server = new GraphQLServer({
   typeDefs: `${__dirname}/app/schema.graphql`,
   resolvers,
-  context: req => ({ ...req })
+  context: req => ({ ...req, pubsub })
 });
 
 //server.express.use(express.static(path.resolve(__dirname, "../client/build")));
@@ -39,4 +41,12 @@ server.express.use(bodyParser.json({ limit: "50mb" }));
 //   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 // });
 
-server.start(() => console.log(`Server is running on ${process.env.PORT}`));
+const options = {
+  endpoint: "/graphql",
+  subscriptions: "/subscriptions",
+  playground: "/playground"
+};
+
+server.start(options, () =>
+  console.log(`Server is running on ${process.env.PORT}`)
+);

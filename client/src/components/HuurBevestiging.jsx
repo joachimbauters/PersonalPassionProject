@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import styles from "./HuurBevestiging.module.css";
 import * as THREE from "three";
+import { ROUTES } from "../constants";
+import { withRouter } from "react-router-dom";
 
 class HuurBevestiging extends Component {
+  // eslint-disable-next-line
+  constructor(props) {
+    super(props);
+  }
+  // eslint-enable-next-line
   async componentDidMount() {
     let camera, renderer, scene, particles, particleSystem;
 
@@ -86,6 +93,7 @@ class HuurBevestiging extends Component {
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
+    const { naam, history } = this.props;
     return (
       <>
         <div className={styles.loginGrid}>
@@ -98,11 +106,25 @@ class HuurBevestiging extends Component {
           />
           <section className={styles.homeinfogrid}>
             <div className={styles.card}>
-              <p className={styles.titel}>Jouw asteroïde - naam is klaar!</p>
+              <p className={styles.titel}>Jouw asteroïde - {naam} is klaar!</p>
               <p className={styles.subtitle}>Bestelling was succesvol</p>
               <div className={styles.btn_flex}>
-                <button className={styles.btn1}>Terug naar home</button>
-                <button className={styles.btn2}>Mijn Asteroïden</button>
+                <button
+                  className={styles.btn1}
+                  onClick={() => {
+                    history.push(ROUTES.landing);
+                  }}
+                >
+                  Terug naar home
+                </button>
+                <button
+                  className={styles.btn2}
+                  onClick={() => {
+                    history.push(ROUTES.mijnasteroiden);
+                  }}
+                >
+                  Mijn Asteroïden
+                </button>
               </div>
             </div>
           </section>
@@ -112,4 +134,4 @@ class HuurBevestiging extends Component {
   }
 }
 
-export default HuurBevestiging;
+export default withRouter(HuurBevestiging);

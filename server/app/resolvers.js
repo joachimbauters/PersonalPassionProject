@@ -24,7 +24,7 @@ const abbonementen = abbonementIds => {
           _id: abbonement.id,
           startTime: new Date(abbonement._doc.startTime).toISOString(),
           endTime: new Date(abbonement._doc.endTime).toISOString(),
-          userId: user.bind(this, abbonement.userId)
+          user: user.bind(this, abbonement.user)
         };
       });
     })
@@ -50,10 +50,34 @@ const user = userId => {
     });
 };
 
+const NEW_ABBONEMENT = "NEW_ABBONEMENT";
+
 module.exports = {
+  Subscription: {
+    newAbbonement: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator([NEW_ABBONEMENT])
+    }
+  },
   Query: {
-    users: () => User.find(),
-    user: (_, {}, ctx) => {
+    users: () => {
+      return User.find()
+        .then(users => {
+          return users.map(user => {
+            return {
+              ...user._doc,
+              _id: user.id,
+              createdAbbonementen: abbonementen.bind(
+                this,
+                user._doc.createdAbbonementen
+              )
+            };
+          });
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    user: (_, __, ctx) => {
       if (!ctx.request.isAuth) {
         throw new Error("Niet ingelogd");
       }
@@ -82,7 +106,7 @@ module.exports = {
               _id: abbonement.id,
               startTime: new Date(abbonement._doc.startTime).toISOString(),
               endTime: new Date(abbonement._doc.endTime).toISOString(),
-              userId: user.bind(this, abbonement._doc.userId)
+              user: user.bind(this, abbonement._doc.user)
             };
           });
         })
@@ -155,7 +179,7 @@ module.exports = {
         startTime: new Date(abbonementInput.startTime),
         endTime: new Date(abbonementInput.endTime),
         active: abbonementInput.active,
-        userId: ctx.request.userId
+        user: ctx.request.userId
       });
 
       let createdAbbonement;
@@ -167,7 +191,7 @@ module.exports = {
             _id: result.id,
             startTime: new Date(abbonement._doc.startTime).toISOString(),
             endTime: new Date(abbonement._doc.endTime).toISOString(),
-            userId: user.bind(this, result._doc.userId)
+            user: user.bind(this, result._doc.user)
           };
           return User.findById(ctx.request.userId);
         })
@@ -179,17 +203,21 @@ module.exports = {
           return user.save();
         })
         .then(() => {
+          ctx.pubsub.publish(NEW_ABBONEMENT, {
+            newAbbonement: createdAbbonement
+          });
           return createdAbbonement;
         })
         .catch(err => {
           throw err;
         });
     },
-    updateUser: async (_, { _id, naam, image, email, wachtwoord }, ctx) => {
+    updateUser: async (_, { naam, image, email, wachtwoord }, ctx) => {
       if (!ctx.request.isAuth) {
         throw new Error("Niet ingelogd");
       }
       try {
+        const _id = ctx.request.userId;
         const hashedPassword = await bcrypt.hash(wachtwoord, 12);
 
         const user = await User.findByIdAndUpdate(
@@ -204,6 +232,22 @@ module.exports = {
         }
 
         return user;
+      } catch (err) {
+        throw err;
+      }
+    },
+    cancelAbbonement: async (_, { abbonementId }, ctx) => {
+      if (!ctx.request.isAuth) {
+        throw new Error("Niet ingelogd");
+      }
+      try {
+        const abbonement = await Abbonement.findByIdAndDelete({
+          _id: abbonementId
+        });
+        if (!abbonement) {
+          throw new Error("abbonement niet gevonden");
+        }
+        return abbonement;
       } catch (err) {
         throw err;
       }

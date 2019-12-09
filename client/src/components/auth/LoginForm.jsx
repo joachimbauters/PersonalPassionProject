@@ -48,6 +48,7 @@ class LoginForm extends Component {
               login.userId,
               login.tokenExpiration
             );
+            localStorage.setItem("token", login.token);
           }
         }}
       >
@@ -89,6 +90,7 @@ class LoginForm extends Component {
                     ref={this.wachtwoordEl}
                     placeholder="Enter een wachtwoord"
                     className={styles.formInput}
+                    autoComplete="off"
                     required
                   />
                 </div>

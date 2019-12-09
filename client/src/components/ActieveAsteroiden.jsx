@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import styles from "./ActieveAsteroiden.module.css";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import GET_ABBONEMENTEN_USER from "../graphql/getAbbonementenUser";
+import DELETE_ABBONEMENT from "../graphql/deleteAbbonement";
 import AsteroidContext from "../context/asteroid-context";
 
 class ActieveAsteroiden extends Component {
@@ -10,6 +11,18 @@ class ActieveAsteroiden extends Component {
     super(props);
   }
   // eslint-enable-next-line
+
+  deleteAbbonement = (cancelAbbonement, abbonementId) => {
+    if (abbonementId.trim().length === 0) {
+      return;
+    }
+
+    cancelAbbonement({
+      variables: {
+        abbonementId: abbonementId.toString()
+      }
+    });
+  };
 
   render() {
     const { context } = this.props;
@@ -31,76 +44,103 @@ class ActieveAsteroiden extends Component {
             }
           }
           return (
-            <Query query={GET_ABBONEMENTEN_USER} context={Options}>
-              {({ loading, error, data: { user } }) => {
-                if (loading) return <p>Loading...</p>;
-                if (error) return <p>Error :( </p>;
-                const abbonementen = user.createdAbbonementen;
+            <Mutation mutation={DELETE_ABBONEMENT} context={Options}>
+              {cancelAbbonement => {
                 return (
-                  <>
-                    <h2 className={styles.titel}>Actieve Asteroïden</h2>
-                    <ul className={styles.list}>
-                      {abbonementen.map(abbonement => {
-                        const asteroid = astroidesArray.find(
-                          item => item.id === abbonement.asteroidId
-                        );
+                  <Query query={GET_ABBONEMENTEN_USER} context={Options}>
+                    {({ loading, error, data: { user } }) => {
+                      if (loading) return <p>Loading...</p>;
+                      if (error) return <p>Error :( </p>;
+                      const abbonementen = user.createdAbbonementen;
+                      return (
+                        <>
+                          <h2 className={styles.titel}>Actieve Asteroïden</h2>
+                          <ul className={styles.list}>
+                            {abbonementen.map(abbonement => {
+                              const asteroid = astroidesArray.find(
+                                item => item.id === abbonement.asteroidId
+                              );
 
-                        return abbonement.active === true ? (
-                          <li key={asteroid.id} className={styles.astroidItem}>
-                            <div className={styles.nameflex}>
-                              <p className={styles.name}>
-                                {asteroid.name} - {abbonement.naam}
-                              </p>
-                              <p className={styles.price}>
-                                €
-                                {Math.round(
-                                  asteroid.estimated_diameter.meters
-                                    .estimated_diameter_min * 2.23
-                                ) + " / maand"}
-                              </p>
-                            </div>
-                            <div className={styles.grootteflex}>
-                              <p className={styles.info}>
-                                {Math.round(
-                                  asteroid.estimated_diameter.meters
-                                    .estimated_diameter_min
-                                )}{" "}
-                                -{" "}
-                                {Math.round(
-                                  asteroid.estimated_diameter.meters
-                                    .estimated_diameter_max
-                                )}{" "}
-                                m
-                              </p>
-                              <p className={styles.infotext}>Grootte</p>
-                            </div>
-                            <div className={styles.afstandflex}>
-                              <p className={styles.info}>
-                                {asteroid.close_approach_data.map(
-                                  asteroidaf =>
-                                    Math.round(asteroidaf.miss_distance.lunar) +
-                                    " lunar"
-                                )}
-                              </p>
-                              <p className={styles.infotext}>
-                                Nominale afstand aarde{" "}
-                              </p>
-                            </div>
-                            <div className={styles.buttonflex}>
-                              <button className={styles.button}>
-                                Stop huur
-                              </button>
-                            </div>
-                          </li>
-                        ) : (
-                          <></>
-                        );
-                      })}
-                    </ul>
-                  </>
+                              const abbonementId = abbonement._id;
+
+                              return abbonement.active === true ? (
+                                <li
+                                  key={asteroid.id}
+                                  className={styles.astroidItem}
+                                >
+                                  <div className={styles.nameflex}>
+                                    <p className={styles.name}>
+                                      {asteroid.name} - {abbonement.naam}
+                                    </p>
+                                    <p className={styles.price}>
+                                      €
+                                      {Math.round(
+                                        asteroid.estimated_diameter.meters
+                                          .estimated_diameter_min * 2.23
+                                      ) + " / maand"}
+                                    </p>
+                                    <p className={styles.aanrekening}>
+                                      Volgende aanrekening:{" "}
+                                      {new Date(
+                                        abbonement.endTime
+                                      ).toLocaleDateString("nl-BE")}
+                                    </p>
+                                  </div>
+                                  <div className={styles.grootteflex}>
+                                    <p className={styles.info}>
+                                      {Math.round(
+                                        asteroid.estimated_diameter.meters
+                                          .estimated_diameter_min
+                                      )}{" "}
+                                      -{" "}
+                                      {Math.round(
+                                        asteroid.estimated_diameter.meters
+                                          .estimated_diameter_max
+                                      )}{" "}
+                                      m
+                                    </p>
+                                    <p className={styles.infotext}>Grootte</p>
+                                  </div>
+                                  <div className={styles.afstandflex}>
+                                    <p className={styles.info}>
+                                      {asteroid.close_approach_data.map(
+                                        asteroidaf =>
+                                          Math.round(
+                                            asteroidaf.miss_distance.lunar
+                                          ) + " lunar"
+                                      )}
+                                    </p>
+                                    <p className={styles.infotext}>
+                                      Nominale afstand aarde{" "}
+                                    </p>
+                                  </div>
+                                  <div className={styles.buttonflex}>
+                                    <button
+                                      className={styles.button}
+                                      onClick={() =>
+                                        this.deleteAbbonement(
+                                          cancelAbbonement,
+                                          abbonementId
+                                        )
+                                      }
+                                    >
+                                      Stop huur
+                                    </button>
+                                  </div>
+                                </li>
+                              ) : (
+                                <></>
+                              );
+                            })}
+                          </ul>
+                          );
+                        </>
+                      );
+                    }}
+                  </Query>
                 );
               }}
-            </Query>
+            </Mutation>
           );
         }}
       </AsteroidContext.Consumer>

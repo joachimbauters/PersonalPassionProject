@@ -1,98 +1,93 @@
 .homeGrid {
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  
-  .container {
-    grid-column: 1/-1;
-    grid-row: 1 / -1;
-    z-index: -1);
-  }
-  
-  .homeinfogrid {
-    pointer-events: none;
-    grid-column: 1/-1;
-    grid-row: 1 / -1;
-    height: 100%;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 4rem max-content 1fr 45% 4rem;
-    grid-template-rows: 7rem 1fr 15rem 2rem;
-  }
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 50vw 50vw;
+}
 
-  .topbar{
-    grid-column: 4 / 5;
-    grid-row: 1/ 2;
-    align-self: center;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-  }
+.container {
+  grid-column: 1 / 2;
+  grid-row: 1 / -1;
+  z-index: 0;
+}
 
-  .topbarBlack{
-    grid-column: 4 / 5;
-    grid-row: 1/ 2;
-    align-self: center;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-  }
-  
-  .logo {
-    font-weight: 300;
-    letter-spacing: 0.8rem;
-    color: white;
-    font-size: 3.6rem;
-    font-weight: 300;
-    grid-column: 2/3;
-    grid-row: 1/ 2;
-    align-self: center;
-  }
-  
+.homeinfogrid {
+  pointer-events: none;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 4rem max-content 1fr 45% 4rem;
+  grid-template-rows: 7rem 1fr 15rem 2rem;
+}
+
+.topbar {
+  grid-column: 4 / 5;
+  grid-row: 1/ 2;
+  align-self: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.topbarBlack {
+  grid-column: 4 / 5;
+  grid-row: 1/ 2;
+  align-self: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: 300;
+  letter-spacing: 0.8rem;
+  color: white;
+  font-size: 3.6rem;
+  font-weight: 300;
+  grid-column: 2/3;
+  grid-row: 1/ 2;
+  align-self: center;
+}
+
+.card {
+  pointer-events: all;
+  grid-column: 4 / 5;
+  grid-row: 2/ 4;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .card {
-    pointer-events: all;
-    grid-column: 4 / 5;
-    grid-row: 2/ 4;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 2rem;
-    border-radius: 2rem;
-    
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+    background-color: rgba(0, 0, 0, 0.12);
   }
-  
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-      .card {
-        -webkit-backdrop-filter: blur(1rem);
-        backdrop-filter: blur(1rem);
-        background-color: rgba(0, 0, 0, 0.12);  
-      }
-  
-    }
+}
 
-    .cardBlack {
-      pointer-events: all;
-      grid-column: 4/6;
-      grid-row: 2/ 4;
-      position: relative;
-      height: 100%;
-      padding: 2rem;
-      border-radius: 2rem;
-    }  
+.cardBlack {
+  pointer-events: all;
+  grid-column: 4/6;
+  grid-row: 2/ 4;
+  position: relative;
+  height: 100%;
+  padding: 2rem;
+  border-radius: 2rem;
+}
 
-    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-      .cardBlack {
-        -webkit-backdrop-filter: blur(1rem);
-        backdrop-filter: blur(1rem);
-        background-color: rgba(255, 255, 255, 0.12);  
-      }
-  
-    }
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .cardBlack {
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+}
 
-
-.recentGekocht{
+.recentGekocht {
   grid-column: 2/3;
   grid-row: 3/ 4;
   padding: 2rem;
@@ -100,19 +95,17 @@
   width: 25rem;
   overflow: scroll;
   pointer-events: all;
-
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .recentGekocht {
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
-    background-color: rgba(0, 0, 0, 0.12);  
+    background-color: rgba(0, 0, 0, 0.12);
   }
-
 }
 
-.recentGekochtBlack{
+.recentGekochtBlack {
   grid-column: 2/3;
   grid-row: 3/ 4;
   padding: 2rem;
@@ -120,19 +113,17 @@
   width: 25rem;
   overflow: scroll;
   pointer-events: all;
-
 }
 
 @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
   .recentGekochtBlack {
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
-    background-color: rgba(255,255 ,255 , 0.12);  
+    background-color: rgba(255, 255, 255, 0.12);
   }
-
 }
 
-.black{
+.black {
   grid-column: 1 / -1;
   grid-row: 1 / -1;
   background-color: rgba(0, 0, 0, 0.74);

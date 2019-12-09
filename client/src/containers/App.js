@@ -174,7 +174,7 @@ class App extends Component {
                       render={() => <SubscribeUser />}
                     />
                     <Route
-                      path={ROUTES.login}
+                      path={ROUTES.huurbevestiging}
                       exact
                       strict
                       render={() => <HuurBevestiging />}

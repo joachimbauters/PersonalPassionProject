@@ -46,7 +46,10 @@ class MijnAsteroidLijst extends Component {
                         );
 
                         return abbonement.active === false ? (
-                          <li key={asteroid.id} className={styles.astroidItem}>
+                          <li
+                            key={abbonement._id}
+                            className={styles.astroidItem}
+                          >
                             <div className={styles.nameflex}>
                               <p className={styles.name}>
                                 {asteroid.name} - {abbonement.naam}

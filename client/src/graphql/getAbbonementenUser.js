@@ -4,6 +4,7 @@ export default gql`
   query user {
     user {
       createdAbbonementen {
+        _id
         asteroidId
         price
         naam
