@@ -1,20 +1,33 @@
-import React from "react";
+import React, { Component } from "react";
 import styles from "./Logout.module.css";
-import { withRouter } from "react-router-dom";
 import AuthContext from "../../context/auth-context";
+import { withApollo } from "react-apollo";
 
-const Logout = () => (
-  <AuthContext.Consumer>
-    {context => {
-      return (
-        <>
-          <button className={styles.button} onClick={context.logout}>
-            Uitloggen
-          </button>
-        </>
-      );
-    }}
-  </AuthContext.Consumer>
-);
+class Logout extends Component {
+  handleClickButton = logout => {
+    logout();
+    this.props.client.resetStore();
+  };
 
-export default withRouter(Logout);
+  render() {
+    return (
+      <AuthContext.Consumer>
+        {context => {
+          const logout = context.logout;
+          return (
+            <>
+              <button
+                className={styles.button}
+                onClick={() => this.handleClickButton(logout)}
+              >
+                Uitloggen
+              </button>
+            </>
+          );
+        }}
+      </AuthContext.Consumer>
+    );
+  }
+}
+
+export default withApollo(Logout);

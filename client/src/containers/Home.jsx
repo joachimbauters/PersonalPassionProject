@@ -6,6 +6,7 @@ import Account from "../components/Account";
 import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
 import AsteroidContext from "../context/asteroid-context";
+import GET_ABBONEMENTBYASTEROIDID from "../graphql/getAbbonementByAsteroidId";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 class ThreeContainer extends Component {
@@ -25,7 +26,8 @@ class ThreeContainer extends Component {
       particles,
       astroids,
       sputnik,
-      sputnik2;
+      sputnik2,
+      opacityValue = 0.5;
 
     const { astroidesArray } = this.props;
 
@@ -43,7 +45,6 @@ class ThreeContainer extends Component {
     };
 
     const createCamera = () => {
-      // Create a Camera
       const fov = 30;
       const aspect = window.innerWidth / 2 / window.innerHeight;
       const near = 0.1;
@@ -239,7 +240,7 @@ class ThreeContainer extends Component {
         const atmopshereSphere = new THREE.SphereGeometry(65, 20, 20);
         const atmosphereMaterial = new THREE.MeshPhongMaterial({
           shininess: 100,
-          shading: THREE.SmoothShading,
+          flatShading: true,
           color: 0xffffff,
           transparent: true,
           opacity: 0.05
@@ -309,14 +310,12 @@ class ThreeContainer extends Component {
     }
 
     const ColorLuminance = (hex, lum) => {
-      // validate hex string
       hex = String(hex).replace(/[^0-9a-f]/gi, "");
       if (hex.length < 6) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
       }
       lum = lum || 0;
 
-      // convert to decimal and change luminosity
       var rgb = "#",
         c,
         i;
@@ -338,6 +337,7 @@ class ThreeContainer extends Component {
         let stepAngle = (Math.PI * 2) / astroidesArray2.length;
         astroidesArray2.forEach(asteroid => {
           this.count++;
+          this.astroidId = asteroid.id;
           const average =
             (asteroid.estimated_diameter.kilometers.estimated_diameter_max +
               asteroid.estimated_diameter.kilometers.estimated_diameter_min) /
@@ -375,6 +375,7 @@ class ThreeContainer extends Component {
 
           const material1 = new THREE.MeshBasicMaterial({
             map: texture1,
+            opacity: opacityValue,
             side: THREE.DoubleSide
           });
           material1.transparent = true;
@@ -390,7 +391,60 @@ class ThreeContainer extends Component {
           mesh1.position.z = -40 - this.distance * 5 + 1 + this.size;
           mesh1.scale.set(0.1, 0.1, 0.1);
 
-          this.mesh.add(c.mesh, mesh1);
+          const image = new Image();
+
+          const texture2 = new THREE.Texture(image);
+          image.onload = () => {
+            texture2.needsUpdate = true;
+          };
+
+          const requestBody = {
+            query: GET_ABBONEMENTBYASTEROIDID,
+            variables: {
+              asteroidId: this.astroidId
+            }
+          };
+
+          fetch("/graphql", {
+            method: "POST",
+            body: JSON.stringify(requestBody),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(res => {
+              if (res.status !== 200 && res.status !== 201) {
+                throw new Error("Failed!");
+              }
+              return res.json();
+            })
+            .then(resData => {
+              if (resData.data.abbonementByAsteroid) {
+                image.src = resData.data.abbonementByAsteroid.user.image;
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+
+          const material2 = new THREE.MeshBasicMaterial({
+            map: texture2,
+            side: THREE.DoubleSide
+          });
+          material2.transparent = true;
+
+          var mesh2 = new THREE.Mesh(
+            new THREE.CircleGeometry(10, 32),
+            material2
+          );
+          mesh2.rotation.x = -Math.PI / 2;
+          mesh2.position.y = 1 + this.size + Math.sin(a) * h;
+          mesh2.position.x = Math.cos(a) * h - this.size * 2;
+          mesh2.rotation.z = a + Math.PI / 2;
+          mesh2.position.z = -40 - this.distance * 5 + 1 + this.size;
+          mesh2.scale.set(0.1, 0.1, 0.1);
+
+          this.mesh.add(c.mesh, mesh1, mesh2);
         });
       }
     }
@@ -404,7 +458,7 @@ class ThreeContainer extends Component {
         const mainModuleMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xb2b8af,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const mainModule = new THREE.Mesh(mainModuleGeom, mainModuleMat);
@@ -422,7 +476,7 @@ class ThreeContainer extends Component {
         const wingsMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xd3c545,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const wings = new THREE.Mesh(wingsGeom, wingsMat);
@@ -433,7 +487,7 @@ class ThreeContainer extends Component {
         const antenaMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xaed3be,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const antena = new THREE.Mesh(antenaGeom, antenaMat);
@@ -553,7 +607,6 @@ class ThreeContainer extends Component {
     const init = () => {
       scene = new THREE.Scene();
       scene.updateMatrixWorld(true);
-      // scene.position.x = 15;
 
       stars();
       createCamera();
@@ -580,6 +633,7 @@ class ThreeContainer extends Component {
 
   render() {
     const { astroidesArray } = this.props;
+
     return (
       <>
         <section className={styles.homeGrid}>

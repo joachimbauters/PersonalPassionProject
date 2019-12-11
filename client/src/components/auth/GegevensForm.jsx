@@ -4,7 +4,6 @@ import styles from "./GegevensForm.module.css";
 import { withRouter } from "react-router-dom";
 import AuthContext from "../../context/auth-context";
 import GET_USER from "../../graphql/getUser";
-import GET_USERS from "../../graphql/getUsers";
 import UPDATE_USER from "../../graphql/updateUser";
 import MyDropzone from "../MyDropzone";
 
@@ -46,8 +45,7 @@ class GegevensForm extends Component {
         image: this.state.file,
         email: email,
         wachtwoord: wachtwoord
-      },
-      refetchQueries: [{ query: GET_USERS }]
+      }
     });
 
     this.naamEl.current.value = "";

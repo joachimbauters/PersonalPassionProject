@@ -48,7 +48,6 @@ class LoginForm extends Component {
               login.userId,
               login.tokenExpiration
             );
-            localStorage.setItem("token", login.token);
           }
         }}
       >

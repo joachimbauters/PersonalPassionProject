@@ -2,8 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user.model.js");
 const Abbonement = require("./models/abbonement.model.js");
-
-// date: new Date(args.eventinput.date)
+const mongoose = require("mongoose");
 
 const tokenCookie = {
   maxAge: 1800000,
@@ -15,7 +14,7 @@ const signatureCookie = {
   sameSite: true
 };
 
-const abbonementen = abbonementIds => {
+const fillAbbonementen = abbonementIds => {
   return Abbonement.find({ _id: { $in: abbonementIds } })
     .then(abbonementen => {
       return abbonementen.map(abbonement => {
@@ -24,7 +23,7 @@ const abbonementen = abbonementIds => {
           _id: abbonement.id,
           startTime: new Date(abbonement._doc.startTime).toISOString(),
           endTime: new Date(abbonement._doc.endTime).toISOString(),
-          user: user.bind(this, abbonement.user)
+          user: fillUser.bind(this, abbonement.user)
         };
       });
     })
@@ -33,13 +32,13 @@ const abbonementen = abbonementIds => {
     });
 };
 
-const user = userId => {
+const fillUser = userId => {
   return User.findById(userId)
     .then(user => {
       return {
         ...user._doc,
         _id: user.id,
-        createdAbbonementen: abbonementen.bind(
+        createdAbbonementen: fillAbbonementen.bind(
           this,
           user._doc.createdAbbonementen
         )
@@ -66,7 +65,7 @@ module.exports = {
             return {
               ...user._doc,
               _id: user.id,
-              createdAbbonementen: abbonementen.bind(
+              createdAbbonementen: fillAbbonementen.bind(
                 this,
                 user._doc.createdAbbonementen
               )
@@ -77,25 +76,42 @@ module.exports = {
           throw err;
         });
     },
-    user: (_, __, ctx) => {
+    user: async (_, __, ctx) => {
       if (!ctx.request.isAuth) {
         throw new Error("Niet ingelogd");
       }
-      const id = ctx.request.userId;
-      return User.findById(id)
-        .then(user => {
-          return {
-            ...user._doc,
-            _id: user.id,
-            createdAbbonementen: abbonementen.bind(
-              this,
-              user._doc.createdAbbonementen
-            )
-          };
-        })
-        .catch(err => {
-          throw err;
+      try {
+        const id = ctx.request.userId;
+        const user = await User.findById(id);
+        return {
+          ...user._doc,
+          _id: user.id,
+          createdAbbonementen: await fillAbbonementen(
+            user._doc.createdAbbonementen
+          )
+        };
+      } catch (err) {
+        throw err;
+      }
+    },
+    abbonementByAsteroid: async (_, { asteroidId }) => {
+      try {
+        const abbonement = await Abbonement.findOne({
+          asteroidId: asteroidId
         });
+        if (!abbonement) {
+          return null;
+        }
+        return {
+          ...abbonement._doc,
+          _id: abbonement.id,
+          startTime: new Date(abbonement._doc.startTime).toISOString(),
+          endTime: new Date(abbonement._doc.endTime).toISOString(),
+          user: await fillUser(abbonement._doc.user)
+        };
+      } catch (err) {
+        throw err;
+      }
     },
     abbonementen: () => {
       return Abbonement.find()
@@ -106,7 +122,7 @@ module.exports = {
               _id: abbonement.id,
               startTime: new Date(abbonement._doc.startTime).toISOString(),
               endTime: new Date(abbonement._doc.endTime).toISOString(),
-              user: user.bind(this, abbonement._doc.user)
+              user: fillUser(abbonement._doc.user)
             };
           });
         })
@@ -191,7 +207,7 @@ module.exports = {
             _id: result.id,
             startTime: new Date(abbonement._doc.startTime).toISOString(),
             endTime: new Date(abbonement._doc.endTime).toISOString(),
-            user: user.bind(this, result._doc.user)
+            user: fillUser.bind(this, result._doc.user)
           };
           return User.findById(ctx.request.userId);
         })

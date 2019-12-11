@@ -12,7 +12,7 @@ class ActieveAsteroiden extends Component {
   }
   // eslint-enable-next-line
 
-  deleteAbbonement = (cancelAbbonement, abbonementId) => {
+  deleteAbbonement = (cancelAbbonement, abbonementId, Options) => {
     if (abbonementId.trim().length === 0) {
       return;
     }
@@ -20,7 +20,8 @@ class ActieveAsteroiden extends Component {
     cancelAbbonement({
       variables: {
         abbonementId: abbonementId.toString()
-      }
+      },
+      refetchQueries: () => [{ query: GET_ABBONEMENTEN_USER, context: Options }]
     });
   };
 
@@ -120,7 +121,8 @@ class ActieveAsteroiden extends Component {
                                       onClick={() =>
                                         this.deleteAbbonement(
                                           cancelAbbonement,
-                                          abbonementId
+                                          abbonementId,
+                                          Options
                                         )
                                       }
                                     >

@@ -37,4 +37,5 @@
 .astroidelist {
   height: calc(100vh - 25rem);
   overflow: scroll;
+  width: 100%;
 }

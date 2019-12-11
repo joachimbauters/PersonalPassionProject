@@ -1,12 +1,9 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query abbonementen {
-    abbonementen {
-      _id
-      asteroidId
+  query abbonementByAsteroid($asteroidId: String!) {
+    abbonementByAsteroid(asteroidId: $asteroidId) {
       naam
-      active
       user {
         image
       }
