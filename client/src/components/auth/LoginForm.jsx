@@ -35,7 +35,7 @@ class LoginForm extends Component {
     });
 
     this.emailEl.current.value = "";
-    this.wachtwoordEl.current = "";
+    this.wachtwoordEl.current.value = "";
   };
   render() {
     return (
@@ -59,6 +59,11 @@ class LoginForm extends Component {
             >
               <h2 className={styles.titel}>Login</h2>
               <div className={styles.formflex}>
+                {loading ? (
+                  <p className={styles.loading}>aan het inloggen...</p>
+                ) : (
+                  <></>
+                )}
                 {error ? (
                   <p className={styles.error}>Verkeerde login</p>
                 ) : (
@@ -79,13 +84,13 @@ class LoginForm extends Component {
                   />
                 </div>
                 <div className={styles.formFlex2}>
-                  <label htmlFor={"email"} className={styles.formLabel}>
+                  <label htmlFor={"wachtwoord"} className={styles.formLabel}>
                     Wachtwoord
                   </label>
                   <input
                     type="password"
-                    name="Wachtwoord"
-                    id="Wachtwoord"
+                    name="wachtwoord"
+                    id="wachtwoord"
                     ref={this.wachtwoordEl}
                     placeholder="Enter een wachtwoord"
                     className={styles.formInput}

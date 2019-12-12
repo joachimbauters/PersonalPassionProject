@@ -12,9 +12,9 @@ class HuurForm extends Component {
     super(props);
 
     this.state = {
-      checked: false,
-      naam: ""
+      checked: false
     };
+
     this.naamEl = React.createRef();
   }
 
@@ -37,8 +37,6 @@ class HuurForm extends Component {
     if (naam.trim().length === 0 || this.state.checked === false) {
       return;
     }
-
-    this.setState({ naam: naam });
 
     createAbbonement({
       variables: {

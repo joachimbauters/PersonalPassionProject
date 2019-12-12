@@ -6,6 +6,7 @@ export default gql`
       _id
       asteroidId
       price
+      naam
       startTime
       endTime
       active

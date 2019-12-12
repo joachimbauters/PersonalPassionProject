@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user.model.js");
 const Abbonement = require("./models/abbonement.model.js");
-const mongoose = require("mongoose");
 
 const tokenCookie = {
   maxAge: 1800000,
@@ -54,7 +53,7 @@ const NEW_ABBONEMENT = "NEW_ABBONEMENT";
 module.exports = {
   Subscription: {
     newAbbonement: {
-      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator([NEW_ABBONEMENT])
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(NEW_ABBONEMENT)
     }
   },
   Query: {
@@ -183,8 +182,8 @@ module.exports = {
         throw err;
       }
     },
-    createAbbonement: async (_, { abbonementInput }, ctx) => {
-      if (!ctx.request.isAuth) {
+    createAbbonement: async (_, { abbonementInput }, { request, pubsub }) => {
+      if (!request.isAuth) {
         throw new Error("Niet ingelogd");
       }
 
@@ -195,7 +194,7 @@ module.exports = {
         startTime: new Date(abbonementInput.startTime),
         endTime: new Date(abbonementInput.endTime),
         active: abbonementInput.active,
-        user: ctx.request.userId
+        user: request.userId
       });
 
       let createdAbbonement;
@@ -209,7 +208,7 @@ module.exports = {
             endTime: new Date(abbonement._doc.endTime).toISOString(),
             user: fillUser.bind(this, result._doc.user)
           };
-          return User.findById(ctx.request.userId);
+          return User.findById(request.userId);
         })
         .then(user => {
           if (!user) {
@@ -219,7 +218,7 @@ module.exports = {
           return user.save();
         })
         .then(() => {
-          ctx.pubsub.publish(NEW_ABBONEMENT, {
+          pubsub.publish(NEW_ABBONEMENT, {
             newAbbonement: createdAbbonement
           });
           return createdAbbonement;

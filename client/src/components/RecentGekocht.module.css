@@ -3,14 +3,24 @@
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  padding: 1rem 2rem 1rem 2rem;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .item {
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+    background-color: rgba(0, 0, 0, 0.12);
+    border-radius: 2rem;
+  }
 }
 
 .item img {
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 0.1rem solid white;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
 }
 
 .item p {
@@ -18,9 +28,11 @@
   color: white;
   font-weight: 300;
   margin-left: 1rem;
+  width: 100%;
+  line-height: 1.5rem;
 }
 
-.item p span {
+.span {
   font-size: 1.2rem;
   color: #ffb101;
   font-weight: 700;

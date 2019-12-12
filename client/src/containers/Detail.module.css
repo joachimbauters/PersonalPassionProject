@@ -123,14 +123,6 @@ pointer-events: all;
 
 }
 
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-.recentGekochtBlack {
-  -webkit-backdrop-filter: blur(1rem);
-  backdrop-filter: blur(1rem);
-  background-color: rgba(255,255 ,255 , 0.12);  
-}
-
-}
 
 .black{
 grid-column: 1 / -1;

@@ -4,20 +4,24 @@ import "./styles/index.css";
 import App from "./containers/App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
-import ApolloClient from "apollo-boost";
+import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";
 import { split } from "apollo-link";
 import { HttpLink } from "apollo-link-http";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const httpLink = new HttpLink({
-  uri: "/graphql"
+  uri: `${process.env.REACT_APP_URL}/graphql`,
+  credentials: "same-origin"
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/subscriptions`,
+  uri: `${process.env.REACT_APP_WS_URL}/subscriptions`,
   options: {
     reconnect: true
   }

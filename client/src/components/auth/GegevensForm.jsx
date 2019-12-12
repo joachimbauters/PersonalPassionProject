@@ -65,7 +65,18 @@ class GegevensForm extends Component {
             }
           };
           return (
-            <Mutation mutation={UPDATE_USER} context={Options}>
+            <Mutation
+              mutation={UPDATE_USER}
+              context={Options}
+              update={(cache, { data: { updateUser } }) => {
+                cache.writeQuery({
+                  query: GET_USER,
+                  data: {
+                    user: updateUser
+                  }
+                });
+              }}
+            >
               {updateUser => {
                 return (
                   <Query query={GET_USER}>

@@ -15,6 +15,7 @@ export default gql`
     ) {
       naam
       email
+      image
     }
   }
 `;

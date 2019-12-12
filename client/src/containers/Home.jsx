@@ -7,8 +7,11 @@ import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
 import AsteroidContext from "../context/asteroid-context";
 import GET_ABBONEMENTBYASTEROIDID from "../graphql/getAbbonementByAsteroidId";
+import img from "../assets/user1.png";
+import dotenv from "dotenv";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
+dotenv.config();
 class ThreeContainer extends Component {
   static contextType = AsteroidContext;
   // eslint-disable-next-line
@@ -405,7 +408,7 @@ class ThreeContainer extends Component {
             }
           };
 
-          fetch("/graphql", {
+          fetch(`${process.env.REACT_APP_URL}/graphql`, {
             method: "POST",
             body: JSON.stringify(requestBody),
             headers: {
@@ -420,7 +423,11 @@ class ThreeContainer extends Component {
             })
             .then(resData => {
               if (resData.data.abbonementByAsteroid) {
-                image.src = resData.data.abbonementByAsteroid.user.image;
+                if (resData.data.abbonementByAsteroid.user.image === null) {
+                  image.src = img;
+                } else {
+                  image.src = resData.data.abbonementByAsteroid.user.image;
+                }
               }
             })
             .catch(err => {

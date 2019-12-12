@@ -21,11 +21,10 @@ const AccountCard = () => (
 
             return (
               <div className={styles.label}>
-                {user.image === null ? (
-                  <img src={stockUser} alt="user" />
-                ) : (
-                  <img src={user.image} alt="user" />
-                )}
+                <img
+                  src={user.image === null ? stockUser : user.image}
+                  alt="user"
+                />
                 <div className={styles.flextext}>
                   <span>Welkom,</span>
                   <span>{user.naam}</span>

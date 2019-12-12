@@ -1,9 +1,11 @@
 # dependencies
 node_modules
 
-design
+# design
+design/
 
-extras
+# extras
+extras/
 
 # testing
 /coverage
