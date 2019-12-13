@@ -194,6 +194,8 @@ module.exports = {
         startTime: new Date(abbonementInput.startTime),
         endTime: new Date(abbonementInput.endTime),
         active: abbonementInput.active,
+        stripeToken: abbonementInput.stripeToken,
+        customer: abbonementInput.customer,
         user: request.userId
       });
 

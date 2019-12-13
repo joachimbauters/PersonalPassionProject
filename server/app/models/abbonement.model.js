@@ -10,6 +10,8 @@ const AbbonementSchema = new Schema(
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
     active: { type: Boolean, required: true },
+    stripeToken: { type: String, required: true },
+    customer: { type: String, required: true },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User"

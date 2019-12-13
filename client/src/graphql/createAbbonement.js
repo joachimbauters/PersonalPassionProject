@@ -10,6 +10,8 @@ export default gql`
       startTime
       endTime
       active
+      stripeToken
+      customer
     }
   }
 `;

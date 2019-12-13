@@ -9,6 +9,7 @@ import AsteroidContext from "../context/asteroid-context";
 import GET_ABBONEMENTBYASTEROIDID from "../graphql/getAbbonementByAsteroidId";
 import img from "../assets/user1.png";
 import dotenv from "dotenv";
+import TWEEN from "@tweenjs/tween.js";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
 dotenv.config();
@@ -591,6 +592,41 @@ class ThreeContainer extends Component {
       };
     };
 
+    function onDocumentMouseDown(event) {
+      // event.preventDefault();
+      const mouse = new THREE.Vector2();
+
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      let vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+      vector = vector.unproject(camera);
+      const raycaster = new THREE.Raycaster(
+        camera.position,
+        vector.sub(camera.position).normalize()
+      );
+      const intersects = raycaster.intersectObjects(
+        astroids.mesh.children,
+        true
+      );
+      console.log(intersects);
+
+      if (intersects.length > 0) {
+        new TWEEN.Tween(camera.position)
+          .to(
+            {
+              x: intersects[0].point.x,
+              y: intersects[0].point.y,
+              z: intersects[0].point.z
+            },
+            2000
+          )
+          .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
+      }
+    }
+
     const update = () => {
       meshes.solarSystem.rotation.z += 0.0002;
       meshes.moonOrbit.rotation.z += 0.002;
@@ -599,6 +635,8 @@ class ThreeContainer extends Component {
       sputnik.pivot.rotation.x -= 0.0001;
       sputnik2.pivot.rotation.y -= 0.002;
       sputnik2.pivot.rotation.x -= 0.0002;
+
+      TWEEN.update();
     };
 
     const render = () => {
@@ -634,6 +672,8 @@ class ThreeContainer extends Component {
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
       controls.rotateSpeed = 0.1;
+
+      document.addEventListener("click", onDocumentMouseDown, false);
     };
     init();
   }
