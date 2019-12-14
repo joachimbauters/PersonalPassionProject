@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Huren.module.css";
 import Astroides from "./asteroides/Asteroides";
 
-const Huren = ({ astroidesArray }) => {
+const Huren = ({ astroidesArray, goToAsteroidOnClick }) => {
   return (
     <>
       <div className={styles.kopenflex}>
@@ -17,7 +17,10 @@ const Huren = ({ astroidesArray }) => {
         </select>
       </div>
       <section className={styles.astroidelist}>
-        <Astroides astroidesArray={astroidesArray} />
+        <Astroides
+          astroidesArray={astroidesArray}
+          goToAsteroidOnClick={goToAsteroidOnClick}
+        />
       </section>
     </>
   );

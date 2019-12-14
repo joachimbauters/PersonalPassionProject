@@ -28,6 +28,10 @@ class asteroidesList extends Component {
     });
   };
 
+  handleClickItem = id => {
+    this.props.goToAsteroidOnClick(id);
+  };
+
   render() {
     const { astroidesArray } = this.props;
 
@@ -55,7 +59,13 @@ class asteroidesList extends Component {
                   );
 
                   return (
-                    <li key={astroid.id} className={styles.astroidItem}>
+                    <li
+                      key={astroid.id}
+                      className={styles.astroidItem}
+                      onClick={() => {
+                        this.handleClickItem(astroid.id);
+                      }}
+                    >
                       <div className={styles.nameflex}>
                         {abbonement ? (
                           abbonement.active === true ? (

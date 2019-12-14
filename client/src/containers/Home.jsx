@@ -15,23 +15,24 @@ const OrbitControls = require("three-orbit-controls")(THREE);
 dotenv.config();
 class ThreeContainer extends Component {
   static contextType = AsteroidContext;
-  // eslint-disable-next-line
   constructor(props) {
     super(props);
+
+    this.asteroids = [];
+    this.goToAsteroidOnClick = this.goToAsteroidOnClick.bind(this);
   }
-  // eslint-enable-next-line
 
   async componentDidMount() {
-    let camera,
-      renderer,
-      scene,
+    const width = this.mount.clientWidth;
+    const height = this.mount.clientHeight;
+
+    let scene,
       controls,
       meshes,
       particles,
-      astroids,
       sputnik,
       sputnik2,
-      opacityValue = 0.5;
+      opacityValue = 1;
 
     const { astroidesArray } = this.props;
 
@@ -50,25 +51,25 @@ class ThreeContainer extends Component {
 
     const createCamera = () => {
       const fov = 30;
-      const aspect = window.innerWidth / 2 / window.innerHeight;
+      const aspect = width / height;
       const near = 0.1;
       const far = 7000;
 
-      camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.y = 80;
-      camera.up.set(0, 0, 1);
-      camera.lookAt(0, 0, 0);
+      this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+      this.camera.position.y = 120;
+      this.camera.up.set(0, 0, 1);
+      this.camera.lookAt(0, 0, 0);
     };
 
     const createRenderer = () => {
-      renderer = new THREE.WebGLRenderer({
+      this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
-      renderer.setSize(window.innerWidth / 2, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-      this.mount.appendChild(renderer.domElement);
+      this.renderer.setSize(width, height);
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setClearColor(0x000000, 0);
+      this.mount.appendChild(this.renderer.domElement);
     };
 
     const createLights = () => {
@@ -338,7 +339,7 @@ class ThreeContainer extends Component {
         this.count = 1;
         this.distance = 0;
         this.size = 0;
-        let stepAngle = (Math.PI * 2) / astroidesArray2.length;
+        const l = astroidesArray2.length;
         astroidesArray2.forEach(asteroid => {
           this.count++;
           this.astroidId = asteroid.id;
@@ -350,7 +351,10 @@ class ThreeContainer extends Component {
           this.size = average;
 
           const c = new Astroid(this.size);
-          const a = stepAngle + this.count;
+
+          const phi = Math.acos(-1 + (2 * this.count) / l);
+          const theta = Math.sqrt(l * Math.PI) * phi;
+
           asteroid.close_approach_data.forEach(asteroid => {
             this.distance = normalize(
               asteroid.miss_distance.lunar,
@@ -360,13 +364,16 @@ class ThreeContainer extends Component {
               30
             );
           });
-          const h = this.distance + this.size;
-          c.mesh.position.y = Math.sin(a) * h;
-          c.mesh.position.x = Math.cos(a) * h;
-          c.mesh.rotation.z = a + Math.PI / 2;
-          c.mesh.position.z = -40 - this.distance * 5;
+
+          c.mesh.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          c.mesh.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi);
+          c.mesh.position.z = this.distance * 2 * Math.cos(phi);
           const s = 1 + this.size;
           c.mesh.scale.set(s, s, s);
+
+          c.mesh.userData = { id: asteroid.id };
 
           const canvas1 = document.createElement("canvas");
           const context1 = canvas1.getContext("2d");
@@ -388,11 +395,14 @@ class ThreeContainer extends Component {
             new THREE.PlaneGeometry(40, 10),
             material1
           );
+
+          mesh1.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          mesh1.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi) + 1 + this.size;
+          mesh1.position.z = this.distance * 2 * Math.cos(phi) + 1 + this.size;
           mesh1.rotation.x = -Math.PI / 2;
-          mesh1.position.y = 1 + this.size + Math.sin(a) * h;
-          mesh1.position.x = Math.cos(a) * h;
-          mesh1.rotation.z = a + Math.PI / 2;
-          mesh1.position.z = -40 - this.distance * 5 + 1 + this.size;
+          mesh1.rotation.z = (2 * Math.PI) / 2;
           mesh1.scale.set(0.1, 0.1, 0.1);
 
           const image = new Image();
@@ -445,13 +455,15 @@ class ThreeContainer extends Component {
             new THREE.CircleGeometry(10, 32),
             material2
           );
-          mesh2.rotation.x = -Math.PI / 2;
-          mesh2.position.y = 1 + this.size + Math.sin(a) * h;
-          mesh2.position.x = Math.cos(a) * h - this.size * 2;
-          mesh2.rotation.z = a + Math.PI / 2;
-          mesh2.position.z = -40 - this.distance * 5 + 1 + this.size;
-          mesh2.scale.set(0.1, 0.1, 0.1);
 
+          mesh2.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          mesh2.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi) - this.size * 2;
+          mesh2.position.z = this.distance * 2 * Math.cos(phi) + 1 + this.size;
+          mesh2.rotation.x = -Math.PI / 2;
+          mesh2.rotation.z = (2 * Math.PI) / 2;
+          mesh2.scale.set(0.1, 0.1, 0.1);
           this.mesh.add(c.mesh, mesh1, mesh2);
         });
       }
@@ -560,8 +572,7 @@ class ThreeContainer extends Component {
       sputnik2.mesh.position.set(10, 0, -5);
       sputnik2.mesh.scale.set(0.01, 0.01, 0.01);
 
-      astroids = new AstroidField();
-      astroids.mesh.position.z = 160;
+      this.astroids = new AstroidField();
 
       const moon = new Moon();
       const moonOrbit = new THREE.Object3D();
@@ -576,7 +587,7 @@ class ThreeContainer extends Component {
 
       solarSystem.add(sputnik.pivot);
       solarSystem.add(sputnik2.pivot);
-      solarSystem.add(astroids.mesh);
+      solarSystem.add(this.astroids.mesh);
       solarSystem.add(earth.mesh);
       solarSystem.add(moonOrbit);
 
@@ -592,44 +603,66 @@ class ThreeContainer extends Component {
       };
     };
 
-    function onDocumentMouseDown(event) {
-      // event.preventDefault();
+    const onDocumentMouseDown = event => {
       const mouse = new THREE.Vector2();
+      const rect = this.renderer.domElement.getBoundingClientRect();
 
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      mouse.x =
+        ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
+      mouse.y =
+        -((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
 
-      let vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
-      vector = vector.unproject(camera);
-      const raycaster = new THREE.Raycaster(
-        camera.position,
-        vector.sub(camera.position).normalize()
-      );
-      const intersects = raycaster.intersectObjects(
-        astroids.mesh.children,
-        true
-      );
-      console.log(intersects);
+      if (mouse.x <= 1) {
+        let vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+        vector = vector.unproject(this.camera);
+        const raycaster = new THREE.Raycaster(
+          this.camera.position,
+          vector.sub(this.camera.position).normalize()
+        );
+        const intersects = raycaster.intersectObjects(
+          this.astroids.mesh.children,
+          true
+        );
 
-      if (intersects.length > 0) {
-        new TWEEN.Tween(camera.position)
-          .to(
-            {
-              x: intersects[0].point.x,
-              y: intersects[0].point.y,
-              z: intersects[0].point.z
-            },
-            2000
-          )
-          .easing(TWEEN.Easing.Cubic.InOut)
-          .start();
+        if (intersects.length > 0) {
+          new TWEEN.Tween(this.camera.position)
+            .to(
+              {
+                x: intersects[0].point.x,
+                y: intersects[0].point.y + 30,
+                z: intersects[0].point.z
+              },
+              2000
+            )
+            .easing(TWEEN.Easing.Cubic.InOut)
+            .start();
+        } else {
+          new TWEEN.Tween(this.camera.position)
+            .to(
+              {
+                x: 0,
+                y: 120,
+                z: 0
+              },
+              2000
+            )
+            .easing(TWEEN.Easing.Cubic.InOut)
+            .start();
+        }
       }
-    }
+    };
 
     const update = () => {
-      meshes.solarSystem.rotation.z += 0.0002;
+      //meshes.solarSystem.rotation.z += 0.0002;
       meshes.moonOrbit.rotation.z += 0.002;
+
+      this.astroids.mesh.children.forEach(object => {
+        if (object.type === "Object3D") {
+          object.rotation.x += 0.0005;
+          object.rotation.y += 0.0005;
+          object.rotation.z += 0.0005;
+        }
+      });
 
       sputnik.pivot.rotation.y -= 0.001;
       sputnik.pivot.rotation.x -= 0.0001;
@@ -640,13 +673,13 @@ class ThreeContainer extends Component {
     };
 
     const render = () => {
-      renderer.render(scene, camera);
+      this.renderer.render(scene, this.camera);
     };
 
     const onWindowResize = () => {
-      camera.aspect = window.innerWidth / 2 / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth / 2, window.innerHeight);
+      this.camera.aspect = width / height;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(width, height);
     };
 
     const init = () => {
@@ -658,8 +691,8 @@ class ThreeContainer extends Component {
       createLights();
       meshes = createSolarSystem();
       createRenderer();
-
       onWindowResize();
+      this.goToAsteroidOnClick();
 
       const animate = () => {
         requestAnimationFrame(animate);
@@ -668,7 +701,7 @@ class ThreeContainer extends Component {
       };
       animate();
 
-      controls = new OrbitControls(camera, renderer.domElement);
+      controls = new OrbitControls(this.camera, this.renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
       controls.rotateSpeed = 0.1;
@@ -676,6 +709,33 @@ class ThreeContainer extends Component {
       document.addEventListener("click", onDocumentMouseDown, false);
     };
     init();
+  }
+
+  goToAsteroidOnClick = asteroidId => {
+    if (asteroidId) {
+      const asteroids = [];
+      this.astroids.mesh.children.forEach(object => {
+        if (object.type === "Object3D") {
+          asteroids.push(object);
+        }
+      });
+      this.object = asteroids.find(item => item.userData.id === asteroidId);
+      new TWEEN.Tween(this.camera.position)
+        .to(
+          {
+            x: this.object.position.x,
+            y: this.object.position.y + 30,
+            z: this.object.position.z
+          },
+          2000
+        )
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .start();
+    }
+  };
+
+  componentWillUnmount() {
+    this.mount.removeChild(this.renderer.domElement);
   }
 
   render() {
@@ -698,7 +758,10 @@ class ThreeContainer extends Component {
             </div>
             <div className={styles.card}>
               <div>
-                <Huren astroidesArray={astroidesArray} />
+                <Huren
+                  astroidesArray={astroidesArray}
+                  goToAsteroidOnClick={this.goToAsteroidOnClick}
+                />
               </div>
             </div>
             <div className={styles.recentGekocht}>

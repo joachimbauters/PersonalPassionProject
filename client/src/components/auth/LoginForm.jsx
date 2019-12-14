@@ -3,7 +3,6 @@ import { Mutation } from "react-apollo";
 import styles from "./LoginForm.module.css";
 import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import facebook_icon from "../../assets/facebook.svg";
 import { ROUTES } from "../../constants";
 import LOGIN_USER from "../../graphql/loginUser";
 import AuthContext from "../../context/auth-context";
@@ -100,10 +99,6 @@ class LoginForm extends Component {
                 </div>
               </div>
               <div>
-                <button className={styles.facebook}>
-                  <img src={facebook_icon} alt="facebook_icon"></img>
-                  <p>Log in met Facebook</p>
-                </button>
                 {loading ? (
                   <button className={styles.btn}>
                     <img src={loader} alt="loader" className={styles.loader} />
@@ -111,11 +106,11 @@ class LoginForm extends Component {
                 ) : (
                   <input type="submit" value="login" className={styles.btn} />
                 )}
-              </div>
-              <div className={styles.registreer}>
-                <NavLink exact={true} to={ROUTES.registreer}>
-                  Registreer
-                </NavLink>
+                <div className={styles.registreer}>
+                  <NavLink exact={true} to={ROUTES.registreer}>
+                    Registreer
+                  </NavLink>
+                </div>
               </div>
             </form>
           </>

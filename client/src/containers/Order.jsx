@@ -14,7 +14,7 @@ class Order extends Component {
   // eslint-enable-next-line
 
   async componentDidMount() {
-    let camera, renderer, scene, particles, particleSystem;
+    let camera, scene, particles, particleSystem;
 
     const createCamera = () => {
       // Create a Camera
@@ -30,14 +30,14 @@ class Order extends Component {
     };
 
     const createRenderer = () => {
-      renderer = new THREE.WebGLRenderer({
+      this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-      this.mount.appendChild(renderer.domElement);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setClearColor(0x000000, 0);
+      this.mount.appendChild(this.renderer.domElement);
     };
 
     const stars = () => {
@@ -61,13 +61,13 @@ class Order extends Component {
     };
 
     const render = () => {
-      renderer.render(scene, camera);
+      this.renderer.render(scene, camera);
     };
 
     const onWindowResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
     const update = () => {
@@ -92,6 +92,11 @@ class Order extends Component {
     };
     init();
   }
+
+  componentWillUnmount() {
+    this.mount.removeChild(this.renderer.domElement);
+  }
+
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;

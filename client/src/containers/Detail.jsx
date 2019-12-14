@@ -4,11 +4,15 @@ import styles from "./Detail.module.css";
 import Account from "../components/Account";
 import Notifications from "../components/Notifications";
 import RecentGekocht from "../components/RecentGekocht";
+import GET_ABBONEMENTBYASTEROIDID from "../graphql/getAbbonementByAsteroidId";
+import img from "../assets/user1.png";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../constants";
+import dotenv from "dotenv";
 import DetailInfo from "../components/DetailInfo";
 const OrbitControls = require("three-orbit-controls")(THREE);
 
+dotenv.config();
 class Detail extends Component {
   // eslint-disable-next-line
   constructor(props) {
@@ -18,14 +22,14 @@ class Detail extends Component {
 
   async componentDidMount() {
     let camera,
-      renderer,
       scene,
       controls,
       meshes,
       particles,
       astroids,
       sputnik,
-      sputnik2;
+      sputnik2,
+      opacityValue = 1;
 
     const { astroidesArray } = this.props;
 
@@ -41,27 +45,26 @@ class Detail extends Component {
     };
 
     const createCamera = () => {
-      // Create a Camera
       const fov = 30;
-      const aspect = window.innerWidth / window.innerHeight;
+      const aspect = window.innerWidth / 2 / window.innerHeight;
       const near = 0.1;
       const far = 7000;
 
       camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      camera.position.y = 80;
+      camera.position.y = 120;
       camera.up.set(0, 0, 1);
       camera.lookAt(0, 0, 0);
     };
 
     const createRenderer = () => {
-      renderer = new THREE.WebGLRenderer({
+      this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-      this.mount.appendChild(renderer.domElement);
+      this.renderer.setSize(window.innerWidth / 2, window.innerHeight);
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setClearColor(0x000000, 0);
+      this.mount.appendChild(this.renderer.domElement);
     };
 
     const createLights = () => {
@@ -237,7 +240,7 @@ class Detail extends Component {
         const atmopshereSphere = new THREE.SphereGeometry(65, 20, 20);
         const atmosphereMaterial = new THREE.MeshPhongMaterial({
           shininess: 100,
-          shading: THREE.SmoothShading,
+          flatShading: true,
           color: 0xffffff,
           transparent: true,
           opacity: 0.05
@@ -307,14 +310,12 @@ class Detail extends Component {
     }
 
     const ColorLuminance = (hex, lum) => {
-      // validate hex string
       hex = String(hex).replace(/[^0-9a-f]/gi, "");
       if (hex.length < 6) {
         hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
       }
       lum = lum || 0;
 
-      // convert to decimal and change luminosity
       var rgb = "#",
         c,
         i;
@@ -333,9 +334,10 @@ class Detail extends Component {
         this.count = 1;
         this.distance = 0;
         this.size = 0;
-        let stepAngle = (Math.PI * 2) / astroidesArray2.length;
+        const l = astroidesArray2.length;
         astroidesArray2.forEach(asteroid => {
           this.count++;
+          this.astroidId = asteroid.id;
           const average =
             (asteroid.estimated_diameter.kilometers.estimated_diameter_max +
               asteroid.estimated_diameter.kilometers.estimated_diameter_min) /
@@ -344,7 +346,10 @@ class Detail extends Component {
           this.size = average;
 
           const c = new Astroid(this.size);
-          const a = stepAngle + this.count;
+
+          const phi = Math.acos(-1 + (2 * this.count) / l);
+          const theta = Math.sqrt(l * Math.PI) * phi;
+
           asteroid.close_approach_data.forEach(asteroid => {
             this.distance = normalize(
               asteroid.miss_distance.lunar,
@@ -354,25 +359,29 @@ class Detail extends Component {
               30
             );
           });
-          const h = this.distance + this.size;
-          c.mesh.position.y = Math.sin(a) * h;
-          c.mesh.position.x = Math.cos(a) * h;
-          c.mesh.rotation.z = a + Math.PI / 2;
-          c.mesh.position.z = -40 - this.distance * 5;
+
+          c.mesh.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          c.mesh.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi);
+          c.mesh.position.z = this.distance * 2 * Math.cos(phi);
           const s = 1 + this.size;
           c.mesh.scale.set(s, s, s);
 
-          var canvas1 = document.createElement("canvas");
-          var context1 = canvas1.getContext("2d");
+          c.mesh.userData = { id: asteroid.id };
+
+          const canvas1 = document.createElement("canvas");
+          const context1 = canvas1.getContext("2d");
           context1.font = "300 50px Verdana";
           context1.fillStyle = "rgba(255,255,255,1)";
           context1.fillText(asteroid.name, 0, 50);
 
-          var texture1 = new THREE.Texture(canvas1);
+          const texture1 = new THREE.Texture(canvas1);
           texture1.needsUpdate = true;
 
-          var material1 = new THREE.MeshBasicMaterial({
+          const material1 = new THREE.MeshBasicMaterial({
             map: texture1,
+            opacity: opacityValue,
             side: THREE.DoubleSide
           });
           material1.transparent = true;
@@ -381,14 +390,77 @@ class Detail extends Component {
             new THREE.PlaneGeometry(40, 10),
             material1
           );
+
+          mesh1.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          mesh1.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi) + 1 + this.size;
+          mesh1.position.z = this.distance * 2 * Math.cos(phi) + 1 + this.size;
           mesh1.rotation.x = -Math.PI / 2;
-          mesh1.position.y = 1 + this.size + Math.sin(a) * h;
-          mesh1.position.x = Math.cos(a) * h;
-          mesh1.rotation.z = a + Math.PI / 2;
-          mesh1.position.z = -40 - this.distance * 5 + 1 + this.size;
+          mesh1.rotation.z = (2 * Math.PI) / 2;
           mesh1.scale.set(0.1, 0.1, 0.1);
 
-          this.mesh.add(c.mesh, mesh1);
+          const image = new Image();
+
+          const texture2 = new THREE.Texture(image);
+          image.onload = () => {
+            texture2.needsUpdate = true;
+          };
+
+          const requestBody = {
+            query: GET_ABBONEMENTBYASTEROIDID,
+            variables: {
+              asteroidId: this.astroidId
+            }
+          };
+
+          fetch(`${process.env.REACT_APP_URL}/graphql`, {
+            method: "POST",
+            body: JSON.stringify(requestBody),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(res => {
+              if (res.status !== 200 && res.status !== 201) {
+                throw new Error("Failed!");
+              }
+              return res.json();
+            })
+            .then(resData => {
+              if (resData.data.abbonementByAsteroid) {
+                if (resData.data.abbonementByAsteroid.user.image === null) {
+                  image.src = img;
+                } else {
+                  image.src = resData.data.abbonementByAsteroid.user.image;
+                }
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+
+          const material2 = new THREE.MeshBasicMaterial({
+            map: texture2,
+            side: THREE.DoubleSide
+          });
+          material2.transparent = true;
+
+          var mesh2 = new THREE.Mesh(
+            new THREE.CircleGeometry(10, 32),
+            material2
+          );
+
+          mesh2.position.x =
+            this.distance * 2 * Math.cos(theta) * Math.sin(phi);
+          mesh2.position.y =
+            this.distance * 2 * Math.sin(theta) * Math.sin(phi) - this.size * 2;
+          mesh2.position.z = this.distance * 2 * Math.cos(phi) + 1 + this.size;
+          mesh2.rotation.x = -Math.PI / 2;
+          mesh2.rotation.z = (2 * Math.PI) / 2;
+          mesh2.scale.set(0.1, 0.1, 0.1);
+
+          this.mesh.add(c.mesh, mesh1, mesh2);
         });
       }
     }
@@ -402,7 +474,7 @@ class Detail extends Component {
         const mainModuleMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xb2b8af,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const mainModule = new THREE.Mesh(mainModuleGeom, mainModuleMat);
@@ -420,7 +492,7 @@ class Detail extends Component {
         const wingsMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xd3c545,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const wings = new THREE.Mesh(wingsGeom, wingsMat);
@@ -431,7 +503,7 @@ class Detail extends Component {
         const antenaMat = new THREE.MeshPhongMaterial({
           shininess: 100,
           color: 0xaed3be,
-          shading: THREE.FlatShading
+          flatShading: true
         });
 
         const antena = new THREE.Mesh(antenaGeom, antenaMat);
@@ -497,7 +569,6 @@ class Detail extends Component {
       sputnik2.mesh.scale.set(0.01, 0.01, 0.01);
 
       astroids = new AstroidField();
-      astroids.mesh.position.z = 160;
 
       const moon = new Moon();
       const moonOrbit = new THREE.Object3D();
@@ -539,26 +610,24 @@ class Detail extends Component {
     };
 
     const render = () => {
-      renderer.render(scene, camera);
+      this.renderer.render(scene, camera);
     };
 
     const onWindowResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.aspect = window.innerWidth / 2 / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(window.innerWidth / 2, window.innerHeight);
     };
 
     const init = () => {
       scene = new THREE.Scene();
       scene.updateMatrixWorld(true);
-      scene.position.x = 15;
 
       stars();
       createCamera();
       createLights();
       meshes = createSolarSystem();
       createRenderer();
-
       onWindowResize();
 
       const animate = () => {
@@ -568,12 +637,16 @@ class Detail extends Component {
       };
       animate();
 
-      controls = new OrbitControls(camera, renderer.domElement);
+      controls = new OrbitControls(camera, this.renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
       controls.rotateSpeed = 0.1;
     };
     init();
+  }
+
+  componentWillUnmount() {
+    this.mount.removeChild(this.renderer.domElement);
   }
 
   render() {
