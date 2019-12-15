@@ -7,6 +7,7 @@ import { ROUTES } from "../constants";
 import CREATE_ABBONEMENT from "../graphql/createAbbonement";
 import GET_ABBONEMENTEN from "../graphql/getAbbonementen";
 import { withApollo } from "react-apollo";
+import GET_ABBONEMENTEN_USER from "../graphql/getAbbonementenUser";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -67,7 +68,8 @@ class Checkout extends Component {
             abbonementen: abbonementen.concat([createAbbonement])
           }
         });
-      }
+      },
+      refetchQueries: () => [{ query: GET_ABBONEMENTEN_USER, context: Options }]
     });
 
     this.props.naam.current.value = "";
@@ -78,7 +80,7 @@ class Checkout extends Component {
     const { price } = this.props;
     return (
       <StripeCheckout
-        amount={price}
+        amount={price * 100}
         currency="EUR"
         description="Beste asteroïden in de galaxy"
         image={asteroid_img}

@@ -49,11 +49,15 @@ const fillUser = userId => {
 };
 
 const NEW_ABBONEMENT = "NEW_ABBONEMENT";
+const DELETE_ABBONEMENT = "DELETE_ABBONEMENT";
 
 module.exports = {
   Subscription: {
     newAbbonement: {
       subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(NEW_ABBONEMENT)
+    },
+    deleteAbbonement: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(DELETE_ABBONEMENT)
     }
   },
   Query: {
@@ -257,6 +261,7 @@ module.exports = {
       if (!ctx.request.isAuth) {
         throw new Error("Niet ingelogd");
       }
+
       try {
         const abbonement = await Abbonement.findByIdAndDelete({
           _id: abbonementId
@@ -264,6 +269,22 @@ module.exports = {
         if (!abbonement) {
           throw new Error("abbonement niet gevonden");
         }
+
+        ctx.pubsub.publish(DELETE_ABBONEMENT, {
+          deleteAbbonement: {
+            ...abbonement._doc,
+            _id: abbonement.id,
+            startTime: new Date(abbonement._doc.startTime).toISOString(),
+            endTime: new Date(abbonement._doc.endTime).toISOString(),
+            user: await fillUser(abbonement._doc.user)
+          }
+        });
+
+        await User.update(
+          { createdAbbonementen: abbonementId },
+          { $pull: { createdAbbonementen: abbonementId } }
+        );
+
         return abbonement;
       } catch (err) {
         throw err;

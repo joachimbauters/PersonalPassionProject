@@ -57,17 +57,13 @@ class LoginForm extends Component {
               onSubmit={e => this.submitHandler(e, login)}
             >
               <h2 className={styles.titel}>Login</h2>
+              {loading ? (
+                <p className={styles.loading}>aan het inloggen...</p>
+              ) : (
+                <></>
+              )}
+              {error ? <p className={styles.error}>Verkeerde login</p> : <></>}
               <div className={styles.formflex}>
-                {loading ? (
-                  <p className={styles.loading}>aan het inloggen...</p>
-                ) : (
-                  <></>
-                )}
-                {error ? (
-                  <p className={styles.error}>Verkeerde login</p>
-                ) : (
-                  <></>
-                )}
                 <div className={styles.formFlex2}>
                   <label htmlFor="email" className={styles.formLabel}>
                     Email adres

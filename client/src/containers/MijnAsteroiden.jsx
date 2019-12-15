@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants";
 import ActieveAsteroiden from "../components/ActieveAsteroiden";
-import MijnAsteroidLijst from "../components/MijnAsteroidLijst";
 import AuthContext from "../context/auth-context";
 
 class MijnAsteroiden extends Component {
@@ -120,9 +119,6 @@ class MijnAsteroiden extends Component {
                     <div className={styles.infogrid}>
                       <div className={styles.actieveBiedingen}>
                         <ActieveAsteroiden context={context} />
-                      </div>
-                      <div className={styles.afgerondeBestellingen}>
-                        <MijnAsteroidLijst context={context} />
                       </div>
                     </div>
                   </div>

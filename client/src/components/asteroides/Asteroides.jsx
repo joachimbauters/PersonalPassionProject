@@ -5,6 +5,7 @@ import { Query } from "react-apollo";
 import img from "../../assets/user1.png";
 import GET_ABBONEMENTEN from "../../graphql/getAbbonementen";
 import GET_NEWABBONEMENT from "../../graphql/getNewAbbonement";
+import DELETE_ABBONEMENT from "../../graphql/deleteAbbonementSubscription";
 
 class asteroidesList extends Component {
   // eslint-disable-next-line
@@ -23,6 +24,30 @@ class asteroidesList extends Component {
         return {
           ...prev,
           abbonementen: [...prev.abbonementen, newAbbonement]
+        };
+      }
+    });
+    subscribeToMore({
+      document: DELETE_ABBONEMENT,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const deleteAbbonement = subscriptionData.data.deleteAbbonement;
+        const data = prev.abbonementen;
+
+        const abbonement = data.find(
+          abbonement => abbonement._id === deleteAbbonement._id
+        );
+
+        console.log(abbonement);
+        console.log(data);
+
+        const updatedData = data.filter(e => e !== abbonement);
+
+        console.log(updatedData);
+
+        return {
+          ...prev,
+          abbonementen: updatedData
         };
       }
     });

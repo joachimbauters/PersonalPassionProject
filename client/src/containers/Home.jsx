@@ -375,14 +375,48 @@ class ThreeContainer extends Component {
 
           c.mesh.userData = { id: asteroid.id };
 
+          const requestBody = {
+            query: GET_ABBONEMENTBYASTEROIDID,
+            variables: {
+              asteroidId: this.astroidId
+            }
+          };
+
           const canvas1 = document.createElement("canvas");
           const context1 = canvas1.getContext("2d");
-          context1.font = "300 50px Verdana";
-          context1.fillStyle = "rgba(255,255,255,1)";
-          context1.fillText(asteroid.name, 0, 50);
+          context1.font = "500 50px Verdana";
 
           const texture1 = new THREE.Texture(canvas1);
-          texture1.needsUpdate = true;
+
+          fetch(`${process.env.REACT_APP_URL}/graphql`, {
+            method: "POST",
+            body: JSON.stringify(requestBody),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+            .then(res => {
+              if (res.status !== 200 && res.status !== 201) {
+                throw new Error("Failed!");
+              }
+              return res.json();
+            })
+            .then(resData => {
+              if (resData.data.abbonementByAsteroid) {
+                context1.fillStyle = "rgba(240,69,69,1)";
+                const text = resData.data.abbonementByAsteroid.naam;
+                context1.fillText(text, 0, 50);
+                texture1.needsUpdate = true;
+              } else {
+                context1.fillStyle = "rgba(255,255,255,1)";
+                const text = asteroid.name;
+                context1.fillText(text, 0, 50);
+                texture1.needsUpdate = true;
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
 
           const material1 = new THREE.MeshBasicMaterial({
             map: texture1,
@@ -410,13 +444,6 @@ class ThreeContainer extends Component {
           const texture2 = new THREE.Texture(image);
           image.onload = () => {
             texture2.needsUpdate = true;
-          };
-
-          const requestBody = {
-            query: GET_ABBONEMENTBYASTEROIDID,
-            variables: {
-              asteroidId: this.astroidId
-            }
           };
 
           fetch(`${process.env.REACT_APP_URL}/graphql`, {
@@ -733,10 +760,6 @@ class ThreeContainer extends Component {
         .start();
     }
   };
-
-  componentWillUnmount() {
-    this.mount.removeChild(this.renderer.domElement);
-  }
 
   render() {
     const { astroidesArray } = this.props;

@@ -1,92 +1,96 @@
 .loginGrid {
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  
-  .container {
-      grid-column: 1/-1;
-      grid-row: 1 / -1;
-      z-index: -1);
-    }
-  
-  .card{
-    width: 50rem;
-    background: white;
-    position: fixed;
-    top: 20vh;
-    left: calc((100% - 50rem) / 2);
-    border-radius: 2rem;
-    padding: 4rem;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .card {
-      -webkit-backdrop-filter: blur(0.3rem);
-      backdrop-filter: blur(0.3rem);
-      background-color: rgba(0, 0, 0, 0.12);  
-    }
-  
-  }
-  
-  .titel{
-    font-weight: 300;
-    letter-spacing: 0.5rem;
-    color: white;
-    font-size: 1.8rem;
-    line-height: 3.3rem;
-    margin-bottom: 1rem;
-  }
-
-  .subtitle{
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.47);
-    font-size: 1.8rem;
-    line-height: 3.3rem;
-    margin-bottom: 4rem;
-  }
-
-.btn_flex{
-   display: flex;
-   width: 35rem;
-   flex-flow: row nowrap;
-   justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
-  .btn1{
-    padding: 1rem 3rem 1rem 3rem;
-    border-radius: 2rem;
-    border: none;
-    color: white;
-    font-size: 1.4rem;
-    font-weight: 500;
-    background-color: rgb(255, 255, 255, 0.23);
-    outline: none;
-    cursor: pointer;
-  }
+.container {
+  grid-column: 1/-1;
+  grid-row: 1 / -1;
+  z-index: -1;
+}
 
-  .btn1:hover {
-    background-color: rgb(255, 255, 255, 0.3);
-  }
+.card {
+  width: 50rem;
+  background: white;
+  position: fixed;
+  top: 10%;
+  left: calc((100% - 50rem) / 2);
+  border-radius: 2rem;
+  padding: 4rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-  .btn2{
-    padding: 1rem 3rem 1rem 3rem;  
-    border-radius: 2rem;
-    border: none;
-    font-size: 1.4rem;
-    color: rgb(255, 177, 1);
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .card {
+    -webkit-backdrop-filter: blur(0.3rem);
+    backdrop-filter: blur(0.3rem);
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+.titel {
+  font-weight: 300;
+  letter-spacing: 0.5rem;
+  color: white;
+  font-size: 1.8rem;
+  line-height: 3.3rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.47);
+  font-size: 1.8rem;
+  line-height: 3.3rem;
+  margin-bottom: 4rem;
+}
+
+.btn_flex {
+  display: flex;
+  width: 35rem;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.btn1 {
+  padding: 1rem 3rem 1rem 3rem;
+  border-radius: 2rem;
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: rgb(255, 255, 255, 0.23);
+  outline: none;
+  cursor: pointer;
+}
+
+.btn1:hover {
+  background-color: rgb(255, 255, 255, 0.3);
+}
+
+.btn2 {
+  padding: 1rem 3rem 1rem 3rem;
+  border-radius: 2rem;
+  border: none;
+  font-size: 1.4rem;
+  color: rgb(255, 177, 1);
   background-color: rgb(255, 177, 1, 0.23);
-    font-weight: 500;
-    outline: none;
-    cursor: pointer;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
 }
 
 .btn2:hover {
-    background-color: rgb(255, 177, 1, 0.3);
-  }
+  background-color: rgb(255, 177, 1, 0.3);
+}
 
+.gif {
+  width: 30rem;
+  height: 30rem;
+  margin-bottom: 2rem;
+}

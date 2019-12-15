@@ -15,12 +15,10 @@ class DetailInfo extends Component {
   };
 
   async componentDidMount() {
-    let camera,
-      renderer,
-      scene,
-      asteroidInfo,
-      height = 400,
-      width = 400;
+    const width = this.mount.clientWidth;
+    const height = this.mount.clientHeight;
+
+    let camera, renderer, scene, asteroidInfo;
 
     const createCamera = () => {
       const { asteroid } = this.props;

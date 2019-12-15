@@ -28,6 +28,18 @@
   background-color: rgb(255, 177, 1, 0.3);
 }
 
+.bevestighuurFake {
+  background-color: rgba(114, 114, 114, 0.1);
+  border: none;
+  color: rgb(114, 114, 114);
+  height: 4rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  width: 100%;
+  outline: none;
+}
+
 .registreer a {
   color: white;
   text-decoration: none;
@@ -78,31 +90,31 @@
 
 .checkbox {
   display: inline-block;
-  width: 2.5rem;
+  width: 1.8rem;
   margin-right: 1rem;
 }
 
 .checkbox label {
   display: block;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
 }
 
 .checkbox label::before {
   content: "";
   display: inline-block;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 1.8rem;
+  width: 1.8rem;
   border: 0.1rem solid white;
 }
 
 .checkbox label::after {
   content: "";
   display: inline-block;
-  height: 0.6rem;
-  width: 0.9rem;
-  border-left: 0.2rem solid white;
-  border-bottom: 0.2rem solid white;
+  height: 0.3rem;
+  width: 0.6rem;
+  border-left: 0.1rem solid white;
+  border-bottom: 0.1rem solid white;
 
   transform: rotate(-45deg);
 }
@@ -117,7 +129,7 @@
 
 /*Checkmark*/
 .checkbox label::after {
-  left: 0.8rem;
+  left: 0.6rem;
   top: 0.95rem;
 }
 
@@ -127,7 +139,7 @@
 }
 /*Checkmark*/
 .checkbox label::after {
-  left: 0.8rem;
+  left: 0.6rem;
   top: 0.95rem;
 }
 
@@ -149,4 +161,16 @@
 .highlight2 {
   font-weight: 400;
   font-size: 2.5rem;
+}
+
+.flexVoorwaarden {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.flexVoorwaarden p {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 300;
 }

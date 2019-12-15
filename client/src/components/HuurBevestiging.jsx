@@ -3,15 +3,17 @@ import styles from "./HuurBevestiging.module.css";
 import * as THREE from "three";
 import { ROUTES } from "../constants";
 import { withRouter } from "react-router-dom";
+import gif from "../assets/confirm.gif";
 
 class HuurBevestiging extends Component {
-  // eslint-disable-next-line
   constructor(props) {
     super(props);
+
+    this.src = gif;
   }
-  // eslint-enable-next-line
+
   async componentDidMount() {
-    let camera, renderer, scene, particles, particleSystem;
+    let camera, scene, particles, particleSystem;
 
     const createCamera = () => {
       // Create a Camera
@@ -27,14 +29,14 @@ class HuurBevestiging extends Component {
     };
 
     const createRenderer = () => {
-      renderer = new THREE.WebGLRenderer({
+      this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setClearColor(0x000000, 0);
-      this.mount.appendChild(renderer.domElement);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setClearColor(0x000000, 0);
+      this.mount.appendChild(this.renderer.domElement);
     };
 
     const stars = () => {
@@ -58,13 +60,13 @@ class HuurBevestiging extends Component {
     };
 
     const render = () => {
-      renderer.render(scene, camera);
+      this.renderer.render(scene, camera);
     };
 
     const onWindowResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
     const update = () => {
@@ -90,10 +92,15 @@ class HuurBevestiging extends Component {
     init();
   }
 
+  componentWillUnmount() {
+    this.mount.removeChild(this.renderer.domElement);
+  }
+
   render() {
     const xWidth = window.innerWidth;
     const yHeight = window.innerHeight;
     const { naam, history } = this.props;
+    if (this.gif) this.gif.src = this.src;
     return (
       <>
         <div className={styles.loginGrid}>
@@ -106,6 +113,12 @@ class HuurBevestiging extends Component {
           />
           <section className={styles.homeinfogrid}>
             <div className={styles.card}>
+              <img
+                src={this.src}
+                alt="gif"
+                className={styles.gif}
+                ref={input => (this.gif = input)}
+              />
               <p className={styles.titel}>Jouw asteroïde - {naam} is klaar!</p>
               <p className={styles.subtitle}>Bestelling was succesvol</p>
               <div className={styles.btn_flex}>
