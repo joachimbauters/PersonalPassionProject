@@ -30,6 +30,7 @@ const checkAbbonement = async () => {
         const d1 = Date.parse(now);
         const d2 = Date.parse(abbonement.endTime);
         if (d2 < d1) {
+          console.log("abbonement verlengd");
           const startTimeNow = new Date().toISOString();
           const endTime = new Date(startTimeNow);
           endTime.setMonth(endTime.getMonth() + 1);
