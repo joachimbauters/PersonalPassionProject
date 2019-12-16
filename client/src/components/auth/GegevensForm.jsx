@@ -104,7 +104,7 @@ class GegevensForm extends Component {
                                   htmlFor="naam"
                                   className={styles.formLabel}
                                 >
-                                  Naam
+                                  Naam of bedrijfsnaam
                                 </label>
                                 <input
                                   type="text"

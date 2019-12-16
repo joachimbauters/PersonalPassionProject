@@ -59,7 +59,7 @@ class RegistreerForm extends Component {
               <div className={styles.formflex}>
                 <div className={styles.formFlex2}>
                   <label htmlFor="naam" className={styles.formLabel}>
-                    Naam
+                    Naam of bedrijfsnaam
                   </label>
                   <input
                     type="text"
