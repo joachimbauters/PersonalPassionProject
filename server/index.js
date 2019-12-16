@@ -48,7 +48,7 @@ const options = {
   playground: "/playground"
 };
 
-//socketio_api();
+socketio_api();
 
 server.start(options, () =>
   console.log(`Server is running on ${process.env.PORT}`)
