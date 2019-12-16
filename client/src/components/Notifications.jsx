@@ -10,7 +10,7 @@ const Notifications = () => {
   const [selected, setSelected] = React.useState(true);
   const [notification, setNotification] = React.useState("geen notificatie");
 
-  const socket = openSocket(`http://localhost:5000`);
+  const socket = openSocket(`${process.env.REACT_APP_SOCKET_URL}`);
 
   socket.on(`connection`, () => {
     console.log(`Connected: ${socket.id}`);
