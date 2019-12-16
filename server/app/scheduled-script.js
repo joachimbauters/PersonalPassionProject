@@ -1,4 +1,4 @@
-const Abbonement = require("./app/models/abbonement.model.js");
+const Abbonement = require("./models/abbonement.model.js");
 const mongoose = require("mongoose");
 
 require("dotenv").config();
