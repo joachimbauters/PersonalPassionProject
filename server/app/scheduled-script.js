@@ -1,6 +1,6 @@
 const Abbonement = require("./models/abbonement.model.js");
-const User = require("./models/user.model.js");
 const mongoose = require("mongoose");
+const socket = require("socket.io-client")("http://localhost:5000");
 
 require("dotenv").config();
 
@@ -20,7 +20,7 @@ const checkAbbonement = async () => {
   try {
     const abbonementen = Abbonement.find(
       { active: true },
-      "_id startTime endTime"
+      "_id naam startTime endTime"
     );
     const abbonementenArray = await abbonementen.exec();
     const now = new Date().toISOString();
@@ -46,6 +46,11 @@ const checkAbbonement = async () => {
             }
           );
 
+          socket.emit(`notification`, {
+            notification: `${abbonement.naam} is hernieuwd voor een maand`
+          });
+
+          socket.disconnect();
           mongoose.connection.close();
         } else {
           return null;

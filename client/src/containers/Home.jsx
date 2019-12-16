@@ -27,7 +27,6 @@ class ThreeContainer extends Component {
     const height = this.mount.clientHeight;
 
     let scene,
-      controls,
       meshes,
       particles,
       sputnik,
@@ -652,6 +651,7 @@ class ThreeContainer extends Component {
         );
 
         if (intersects.length > 0) {
+          this.controls.enabled = false;
           new TWEEN.Tween(this.camera.position)
             .to(
               {
@@ -664,6 +664,7 @@ class ThreeContainer extends Component {
             .easing(TWEEN.Easing.Cubic.InOut)
             .start();
         } else {
+          this.controls.enabled = true;
           new TWEEN.Tween(this.camera.position)
             .to(
               {
@@ -676,6 +677,22 @@ class ThreeContainer extends Component {
             .easing(TWEEN.Easing.Cubic.InOut)
             .start();
         }
+      }
+    };
+
+    const keyDownHandler = e => {
+      if (e.keyCode === 32) {
+        new TWEEN.Tween(this.camera.position)
+          .to(
+            {
+              x: 0,
+              y: 120,
+              z: 0
+            },
+            2000
+          )
+          .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
       }
     };
 
@@ -728,12 +745,14 @@ class ThreeContainer extends Component {
       };
       animate();
 
-      controls = new OrbitControls(this.camera, this.renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.05;
-      controls.rotateSpeed = 0.1;
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = true;
+      this.controls.dampingFactor = 0.05;
+      this.controls.enableRotate = false;
+      this.controls.enablePan = false;
 
       document.addEventListener("click", onDocumentMouseDown, false);
+      document.addEventListener("keydown", keyDownHandler, false);
     };
     init();
   }
@@ -747,6 +766,7 @@ class ThreeContainer extends Component {
         }
       });
       this.object = asteroids.find(item => item.userData.id === asteroidId);
+      this.controls.enabled = false;
       new TWEEN.Tween(this.camera.position)
         .to(
           {
@@ -790,6 +810,9 @@ class ThreeContainer extends Component {
             <div className={styles.recentGekocht}>
               <RecentGekocht />
             </div>
+            <p className={styles.bijtext}>
+              Druk spatie om deze view te resetten
+            </p>
           </div>
         </section>
       </>

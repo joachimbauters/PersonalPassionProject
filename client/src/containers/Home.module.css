@@ -95,3 +95,13 @@
   overflow: scroll;
   pointer-events: all;
 }
+
+.bijtext {
+  grid-column: 3/4;
+  grid-row: 3/4;
+  justify-self: center;
+  align-self: flex-end;
+  color: rgba(255, 255, 255, 0.582);
+  font-weight: 300;
+  font-size: 1.5rem;
+}

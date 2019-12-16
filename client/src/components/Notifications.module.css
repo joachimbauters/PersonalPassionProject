@@ -82,3 +82,10 @@
   cursor: pointer;
   outline: none;
 }
+
+.bol {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: #f04545;
+  border-radius: 2rem;
+}

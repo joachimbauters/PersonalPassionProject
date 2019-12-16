@@ -4,6 +4,7 @@ type Query {
   users: [User]!
   user: User!
   notification(id: String!): Notification!
+  notifications: [Notification]!
   abbonementen: [Abbonement]!
   abbonement(id: String!): Abbonement!
   abbonementByAsteroid(asteroidId: String!): Abbonement
@@ -74,5 +75,6 @@ type AuthData {
 
 type Notification {
   _id: String!
-  text: String!
+  abbonement: Abbonement!
+  user: User!
 }
