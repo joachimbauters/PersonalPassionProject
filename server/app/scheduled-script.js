@@ -3,8 +3,6 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-//const socket = require("socket.io-client")(process.env.SOCKET_URL);
-
 mongoose
   .connect(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -17,7 +15,7 @@ mongoose
     process.exit();
   });
 
-const checkAbbonement = async () => {
+module.exports = checkAbbonement = async () => {
   try {
     const abbonementen = Abbonement.find(
       { active: true },
@@ -47,12 +45,6 @@ const checkAbbonement = async () => {
               new: true
             }
           );
-
-          // socket.emit(`notification`, {
-          //   notification: `${abbonement.naam} is hernieuwd voor een maand`
-          // });
-
-          //socket.disconnect();
           mongoose.connection.close();
         } else {
           return null;
@@ -66,4 +58,4 @@ const checkAbbonement = async () => {
   }
 };
 
-checkAbbonement();
+//checkAbbonement();

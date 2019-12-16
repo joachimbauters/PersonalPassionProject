@@ -5,7 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const isAuth = require("./app/middleware/is-auth");
-const { socketio_api } = require("./socketApi");
+const Abbonement = require(`./app/models/abbonement.model`);
+const cron = require("node-cron");
+const checkAbbonement = require("./app/scheduled-script");
+//const { socketio_api } = require("./socketApi");
 
 require("dotenv").config();
 
@@ -49,6 +52,10 @@ const options = {
 };
 
 //socketio_api();
+
+cron.schedule("* * * * *", () => {
+  checkAbbonement();
+});
 
 server.start(options, () =>
   console.log(`Server is running on ${process.env.PORT}`)
