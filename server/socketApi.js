@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const server = app.listen(5000);
+require("dotenv").config();
+const server = app.listen(process.env.PORT || 5000);
 const io = require("socket.io")(server);
 
 exports.socketio_api = () => {
