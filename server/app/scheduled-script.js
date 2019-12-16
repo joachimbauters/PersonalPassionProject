@@ -1,6 +1,5 @@
 const Abbonement = require(`./models/abbonement.model.js`);
-//const mongoose = require("mongoose");
-import mongoose from "mongoose";
+const mongoose = require("../node_modules/mongoose");
 
 require("dotenv").config();
 
