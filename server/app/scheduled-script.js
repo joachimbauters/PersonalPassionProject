@@ -1,19 +1,6 @@
 const Abbonement = require(`./models/abbonement.model.js`);
-const mongoose = require("mongoose");
 
 require("dotenv").config();
-
-mongoose
-  .connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-  })
-  .then(() => console.log("db connected"))
-  .catch(e => {
-    console.log("Error, exiting", e);
-    process.exit();
-  });
 
 module.exports = checkAbbonement = async () => {
   try {
@@ -45,7 +32,6 @@ module.exports = checkAbbonement = async () => {
               new: true
             }
           );
-          mongoose.connection.close();
         } else {
           return null;
         }
@@ -57,5 +43,3 @@ module.exports = checkAbbonement = async () => {
     throw err;
   }
 };
-
-//checkAbbonement();

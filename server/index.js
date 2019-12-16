@@ -53,9 +53,9 @@ const options = {
 
 //socketio_api();
 
-// cron.schedule("* * * * *", () => {
-//   checkAbbonement();
-// });
+cron.schedule("* * * * *", () => {
+  checkAbbonement();
+});
 
 server.start(options, () =>
   console.log(`Server is running on ${process.env.PORT}`)
