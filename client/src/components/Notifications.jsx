@@ -1,27 +1,27 @@
 import React from "react";
 import styles from "./Notifications.module.css";
-import openSocket from "socket.io-client";
+//import openSocket from "socket.io-client";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const Notifications = () => {
-  const controller = new AbortController();
+  //const controller = new AbortController();
   const [selected, setSelected] = React.useState(true);
   const [notification, setNotification] = React.useState("geen notificatie");
 
-  const socket = openSocket(`${process.env.REACT_APP_SOCKET_URL}`);
+  // const socket = openSocket(`http://localhost:4000/`);
 
-  socket.on(`connection`, () => {
-    console.log(`Connected: ${socket.id}`);
-  });
+  // socket.on(`connection`, () => {
+  //   console.log(`Connected: ${socket.id}`);
+  // });
 
-  React.useEffect(() => {
-    socket.on(`notification`, notification => {
-      setNotification(notification.notification);
-      return () => controller.abort();
-    });
-  });
+  // React.useEffect(() => {
+  //   socket.on(`notification`, notification => {
+  //     setNotification(notification.notification);
+  //     return () => controller.abort();
+  //   });
+  // });
 
   const handleClickButton = () => {
     setNotification("geen notificatie");

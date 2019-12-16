@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-const socket = require("socket.io-client")(process.env.SOCKET_URL);
+//const socket = require("socket.io-client")(process.env.SOCKET_URL);
 
 mongoose
   .connect(process.env.DB_URL, {
@@ -47,11 +47,11 @@ const checkAbbonement = async () => {
             }
           );
 
-          socket.emit(`notification`, {
-            notification: `${abbonement.naam} is hernieuwd voor een maand`
-          });
+          // socket.emit(`notification`, {
+          //   notification: `${abbonement.naam} is hernieuwd voor een maand`
+          // });
 
-          socket.disconnect();
+          //socket.disconnect();
           mongoose.connection.close();
         } else {
           return null;
