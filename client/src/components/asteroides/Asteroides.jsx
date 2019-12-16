@@ -33,18 +33,10 @@ class asteroidesList extends Component {
         if (!subscriptionData.data) return prev;
         const deleteAbbonement = subscriptionData.data.deleteAbbonement;
         const data = prev.abbonementen;
-
         const abbonement = data.find(
           abbonement => abbonement._id === deleteAbbonement._id
         );
-
-        console.log(abbonement);
-        console.log(data);
-
         const updatedData = data.filter(e => e !== abbonement);
-
-        console.log(updatedData);
-
         return {
           ...prev,
           abbonementen: updatedData

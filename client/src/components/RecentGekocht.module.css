@@ -12,19 +12,19 @@
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
     background-color: rgba(0, 0, 0, 0.12);
-    border-radius: 2rem;
+    border-radius: 1.5rem;
   }
 }
 
 .item img {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 5rem;
+  height: 5rem;
   border: 0.1rem solid white;
-  border-radius: 1.5rem;
+  border-radius: 2.5rem;
 }
 
 .item p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: white;
   font-weight: 300;
   margin-left: 1rem;
