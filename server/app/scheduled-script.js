@@ -1,5 +1,5 @@
 const Abbonement = require(`./models/abbonement.model.js`);
-const mongoose = require("../node_modules/mongoose");
+const mongoose = require("./server/node_modules/mongoose");
 
 require("dotenv").config();
 
