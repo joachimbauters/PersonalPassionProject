@@ -681,7 +681,7 @@ class ThreeContainer extends Component {
     };
 
     const keyDownHandler = e => {
-      if (e.keyCode === 32) {
+      if (e.keyCode === 82) {
         new TWEEN.Tween(this.camera.position)
           .to(
             {
@@ -810,9 +810,14 @@ class ThreeContainer extends Component {
             <div className={styles.recentGekocht}>
               <RecentGekocht />
             </div>
-            <p className={styles.bijtext}>
-              Druk spatie om deze view te resetten
-            </p>
+            <div className={styles.bijtextflex}>
+              <p className={styles.bijtext}>
+                Reset view : <span>r</span>
+              </p>
+              <p className={styles.bijtext}>
+                zoom in / uit : <span>scroll</span>
+              </p>
+            </div>
           </div>
         </section>
       </>

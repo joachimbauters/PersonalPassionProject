@@ -97,11 +97,21 @@
 }
 
 .bijtext {
-  grid-column: 3/4;
-  grid-row: 3/4;
-  justify-self: center;
-  align-self: flex-end;
   color: rgba(255, 255, 255, 0.582);
   font-weight: 300;
   font-size: 1.5rem;
+}
+
+.bijtext span {
+  color: #ffb101;
+  font-weight: 700;
+}
+
+.bijtextflex {
+  grid-column: 3/4;
+  grid-row: 3/4;
+  align-self: flex-end;
+
+  display: flex;
+  justify-content: space-around;
 }

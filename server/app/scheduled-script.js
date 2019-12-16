@@ -1,8 +1,9 @@
 const Abbonement = require("./models/abbonement.model.js");
 const mongoose = require("mongoose");
-const socket = require("socket.io-client")("http://localhost:5000");
 
 require("dotenv").config();
+
+const socket = require("socket.io-client")(process.env.SOCKET_URL);
 
 mongoose
   .connect(process.env.DB_URL, {
