@@ -1,5 +1,6 @@
 const express = require("express");
 const { GraphQLServer, PubSub } = require("graphql-yoga");
+const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
