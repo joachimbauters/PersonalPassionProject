@@ -30,7 +30,7 @@
     "react-stripe-checkout": "^2.6.3",
     "socket.io-client": "^2.3.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "three": "^0.110.0",
+    "three": "^0.137.0",
     "three-orbit-controls": "^82.1.0",
     "uuid": "^3.3.2"
   },
